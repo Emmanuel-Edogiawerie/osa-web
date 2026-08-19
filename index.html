@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSA</title>
+<meta name="description" content="Accesorios para tu escritorio, en drops limitados. Domina tu espacio.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OSA">
+<meta property="og:description" content="Accesorios para tu escritorio, en drops limitados. Domina tu espacio.">
+<meta property="og:image" content="https://osa.limited/og-image.png">
+<meta property="og:url" content="https://osa.limited/">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+    @font-face {
+        font-family: 'Array-Wide';
+        src: url('fonts/Array-Wide.woff2') format('woff2'),
+             url('fonts/Array-Wide.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Array-Bold';
+        src: url('fonts/Array-Bold.woff2') format('woff2'),
+             url('fonts/Array-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    /* Supreme: la grotesca de la marca (la que está guardada como
+       "parecidahelvetica" en OSAFINAL). Se usa en cabecera y pie, donde
+       Array-Wide resultaba demasiado técnico. */
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Medium.woff2') format('woff2'),
+             url('fonts/Supreme-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Bold.woff2') format('woff2'),
+             url('fonts/Supreme-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Regular.woff2') format('woff2'),
+             url('fonts/Geist-Regular.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Medium.woff2') format('woff2'),
+             url('fonts/Geist-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* OJO: en <html> no se puede poner overflow-x, NI `hidden` NI `clip`.
+       Ambos rompen el position:sticky de la barra superior — comprobado el
+       11 ago 2026: con clip la barra se va con el scroll (-590px en vez de
+       quedarse a +10). El desbordamiento lateral hay que resolverlo siempre
+       en origen, no tapándolo aquí. */
+    html { scroll-behavior: smooth; }
+
+    body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: 'Geist', -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    /* ---------- Barra de anuncio + navegación ----------
+       Como en MERTRA: no tocan el borde de la ventana. Anuncio y nav van
+       dentro de un mismo bloque flotante con esquinas redondeadas, y el
+       conjunto se queda pegado arriba al bajar. overflow:hidden es lo que
+       recorta las esquinas de los hijos. */
+    /* Medidas tomadas de mertra.com: anuncio 30px, nav 38px, margen 16px. */
+    .topbar {
+        position: sticky;
+        top: 1rem;
+        z-index: 20;
+        margin: 1rem;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .announce {
+        /* Naranja translúcido con desenfoque: se ve el fondo a través,
+           igual que la banda de MERTRA. Opaco cortaba la página en dos. */
+        background: rgba(255, 57, 11, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #fff;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        /* 11px: el mismo que la banda de anuncio de MERTRA */
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    /* Nav a la MERTRA: wordmark a un lado, enlaces centrados, utilidades al
+       otro. Grid de 3 columnas iguales para que el centro quede centrado de
+       verdad, y no desplazado por el ancho del wordmark. */
+    .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        height: 38px;
+        padding: 0 1.2rem;
+        /* Opaco a propósito: el cristal es solo la franja naranja de arriba */
+        background: #0d0d0d;
+    }
+
+    .nav-wordmark {
+        display: block;
+        /* 40px de ancho = 16px de alto, el mismo que el logo de MERTRA */
+        width: 40px;
+        aspect-ratio: 550 / 220;
+        background-color: #fff;
+        -webkit-mask-image: url('osa-wordmark.svg');
+        mask-image: url('osa-wordmark.svg');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: left center;
+        mask-position: left center;
+        transition: background-color 0.2s;
+    }
+
+    .nav-brand:hover .nav-wordmark { background-color: #ff6a1a; }
+
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        white-space: nowrap;
+    }
+
+    .nav-links a,
+    .nav-utils a {
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        /* 13px: el mismo que los enlaces de la nav de MERTRA */
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-utils a:hover { color: #fff; }
+
+    .nav-utils {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+
+    /* ---------- Estructura común de sección ---------- */
+    .section {
+        position: relative;
+        padding: 6.5rem 1.5rem;
+        border-top: 1px solid #141414;
+        /* la polilla de fondo no puede desbordar la sección */
+        overflow: hidden;
+        /* Explícito y no heredado: las secciones con una polilla en
+           mix-blend-mode aíslan la mezcla, y sin un fondo propio su negro
+           acababa siendo un pelo distinto al del body. Eso dibujaba una
+           línea en la juntura con la sección clara. */
+        background-color: #0d0d0d;
+    }
+
+    /* ---------- Polillas reales ----------
+       Fotografías con el fondo ya negro. mix-blend-mode: screen hace que ese
+       negro desaparezca y solo quede la luz del bicho, conservando las alas
+       translúcidas, las antenas y el grano. Recortarlas a mano habría dejado
+       bordes duros y se habría comido justo eso. */
+    .section-moth {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 640px;
+        max-width: 88%;
+        mix-blend-mode: screen;
+        opacity: 0.15;
+        pointer-events: none;
+        user-select: none;
+        z-index: 0;
+
+        /* El fondo de estas fotos tiene mucho grano y no llega a negro puro,
+           así que con screen se sumaba y se veía el rectángulo. Dos arreglos:
+           1) subir el contraste hunde ese gris de fondo hasta negro, que con
+              screen ya es invisible;
+           2) una máscara elíptica desvanece los bordes, para que la foto no
+              termine en un canto recto sino disolviéndose. */
+        filter: contrast(1.3) brightness(0.92);
+        -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 50%,
+            #000 35%, rgba(0, 0, 0, 0.55) 62%, transparent 82%);
+        mask-image: radial-gradient(ellipse 62% 58% at 50% 50%,
+            #000 35%, rgba(0, 0, 0, 0.55) 62%, transparent 82%);
+    }
+
+    /* ---------- Sección clara ----------
+       El degradado WHITE-ORANGE del manual, que estaba definido y sin usar.
+       Rompe el bloque negro justo antes del pie, que es donde está el botón
+       que importa. */
+    .section-clara {
+        /* Tres capas. Las dos primeras son el fundido contra el negro de
+           arriba (la sección anterior) y el de abajo (el pie): sin ellas se
+           veía una línea de corte en seco. Van por delante del degradado de
+           marca, que es la capa de fondo.
+           El relleno de arriba y abajo está subido a propósito, para que el
+           texto empiece cuando el fundido ya ha terminado. */
+        background:
+            linear-gradient(180deg,
+                #0d0d0d 0%,
+                rgba(13, 13, 13, 0.995) 2%,
+                rgba(13, 13, 13, 0.97) 4%,
+                rgba(13, 13, 13, 0.92) 5%,
+                rgba(13, 13, 13, 0.83) 7%,
+                rgba(13, 13, 13, 0.69) 9%,
+                rgba(13, 13, 13, 0.5) 12%,
+                rgba(13, 13, 13, 0.31) 15%,
+                rgba(13, 13, 13, 0.14) 18%,
+                rgba(13, 13, 13, 0.04) 21%,
+                rgba(13, 13, 13, 0) 24%),
+            linear-gradient(0deg,
+                #0d0d0d 0%,
+                rgba(13, 13, 13, 0.99) 1%,
+                rgba(13, 13, 13, 0.94) 3%,
+                rgba(13, 13, 13, 0.84) 4%,
+                rgba(13, 13, 13, 0.68) 6%,
+                rgba(13, 13, 13, 0.46) 8%,
+                rgba(13, 13, 13, 0.24) 10%,
+                rgba(13, 13, 13, 0.08) 13%,
+                rgba(13, 13, 13, 0) 16%),
+            /* El naranja fuerte empujado al último tramo, fuera de la columna
+               de texto. Antes entraba al 78% y la mitad derecha de cada línea
+               caía sobre naranja: el contraste cambiaba dentro de la misma
+               frase y por eso se leía mal. */
+            linear-gradient(105deg,
+                #ffffff 0%,
+                #fff6f1 40%,
+                #ffe6d8 62%,
+                #ffab7d 82%,
+                #ff5a26 93%,
+                #ff390b 100%);
+        padding-top: 13rem;
+        padding-bottom: 9rem;
+        border-top: none;
+        color: #1a1109;
+        /* La juntura con la sección de arriba cae en un píxel fraccionario, y
+           como esa sección compone en capa aparte (overflow:hidden con una
+           polilla en mix-blend-mode) el navegador dejaba una costura clara de
+           1px. Subirla con margin negativo no vale: entonces asomaba el
+           degradado de marca. Esta sombra pinta 2px de negro justo encima del
+           borde, que es exactamente lo que hay a ese lado. */
+        box-shadow: 0 -2px 0 0 #0d0d0d;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* La dorada es la única con color propio. Va arriba a la derecha, fuera
+       del eje del texto, para que no compita con la línea de vida del drop. */
+    .moth-dorada {
+        top: 6%;
+        left: auto;
+        right: 4%;
+        transform: none;
+        width: 420px;
+        opacity: 0.45;
+    }
+
+    /* Sobre claro hay que invertir la foto ANTES de mezclar: la original es
+       polilla clara sobre negro, y multiply con ese negro pinta el rectángulo
+       entero. Invertida pasa a ser polilla oscura sobre blanco, y entonces
+       multiply borra el blanco y deja solo el bicho. */
+    .moth-clara {
+        /* grayscale ANTES de invertir: si no, el dorado de la foto se
+           vuelve azul verdoso y mete un color que no es de la marca.
+           El brightness es lo que remata: el negro original tiene grano, así
+           que invertido no llega a blanco puro y multiply dejaba ver el
+           rectángulo de la foto. Saturándolo a blanco desaparece. */
+        filter: grayscale(1) invert(1) brightness(1.28) contrast(1.12);
+        mix-blend-mode: multiply;
+        /* bajada: pasaba por detrás del texto y le restaba legibilidad */
+        opacity: 0.2;
+        /* Abajo a la izquierda, fuera del eje del texto. La foto es muy
+           vertical: a este ancho mediría casi 1000px de alto y ocuparía toda
+           la columna en vez de leerse como una pieza en la esquina, así que
+           se le limita el alto y se recorta con cover, que se queda con la
+           franja del bicho y tira el vacío de arriba y abajo. */
+        top: auto;
+        bottom: 4%;
+        left: 4%;
+        transform: none;
+        width: 527px;
+        height: 330px;
+        object-fit: cover;
+        object-position: center 46%;
+    }
+
+    .section-clara h2 { color: #16100a; }
+
+    /* OJO con la especificidad: `.section p` y `.section p b` valen lo mismo
+       que `.section-clara p` y van DESPUÉS en la hoja, así que ganaban ellas
+       y el párrafo salía en gris claro y las negritas en blanco sobre fondo
+       claro. Hay que bajar un nivel más (`.inner`) para pasarles por encima.
+       Columna estrecha a propósito: líneas largas y centradas se leen peor,
+       el ojo pierde el punto de vuelta en cada salto. */
+    .section-clara .inner p {
+        color: #3a2413;
+        max-width: 470px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.98rem;
+        line-height: 1.75;
+    }
+
+    .section-clara .inner p b { color: #16100a; }
+
+    /* El botón es el objetivo de la sección: que pese lo que le toca */
+    .section-clara .btn-primary {
+        padding: 1.05rem 2.2rem;
+        font-size: 0.82rem;
+    }
+
+    /* La nota va pegada a su botón, como una coletilla y no como otro bloque */
+    .section-clara .btn-note {
+        margin-top: 0.85rem;
+        font-size: 0.78rem;
+        line-height: 1.55;
+    }
+
+    /* El email es la alternativa, no el plan A: ocupa menos y pesa menos */
+    .section-clara .divider { margin: 3.2rem 0 1.6rem; }
+    /* Sin max-width propio: el botón tiene tope de 270px, así que ensanchar
+       el contenedor descuadraba el campo respecto a su botón. */
+
+    .section-clara .btn-ghost {
+        margin-top: 2.6rem;
+        font-size: 0.72rem;
+    }
+
+    /* El botón se invierte: sobre naranja, el naranja no se ve */
+    .section-clara .btn-primary {
+        background: #16100a;
+        border-color: #16100a;
+        color: #fff;
+    }
+
+    .section-clara .btn-primary:hover {
+        background: #000;
+        border-color: #000;
+    }
+
+    .section-clara .btn-note { color: #6b4630; }
+
+    .section-clara .divider::before,
+    .section-clara .divider::after { background: rgba(22, 16, 10, 0.22); }
+
+    .section-clara .divider span { color: #7a5239; }
+
+    .section-clara .form-container input[type="email"] {
+        background: rgba(255, 255, 255, 0.55);
+        border-color: rgba(22, 16, 10, 0.22);
+        color: #16100a;
+    }
+
+    .section-clara .form-container input[type="email"]:focus { border-color: #16100a; }
+    .section-clara .form-container input[type="email"]::placeholder { color: #9a765c; }
+
+    .section-clara .form-container button {
+        border-color: rgba(22, 16, 10, 0.3);
+        color: #16100a;
+    }
+
+    .section-clara .form-container button:hover {
+        border-color: #16100a;
+        color: #000;
+    }
+
+    .section-clara .form-msg.success { color: #7a2f0c; }
+    .section-clara .form-msg.error   { color: #8c2a1a; }
+
+    .section-clara .btn-ghost {
+        border-color: rgba(22, 16, 10, 0.3);
+        color: #2c1d12;
+    }
+
+    .section-clara .btn-ghost:hover { border-color: #16100a; color: #000; }
+    .section-clara .lock { stroke: #16100a; }
+
+    .inner {
+        position: relative;
+        z-index: 1;
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .section h2 {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: clamp(1.15rem, 4.5vw, 1.6rem);
+        font-weight: 400;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 1.5;
+        margin-bottom: 1.8rem;
+    }
+
+    .section p {
+        font-size: 0.9rem;
+        line-height: 1.85;
+        color: #8a8a8a;
+        text-align: center;
+    }
+
+    .section p + p { margin-top: 1.1rem; }
+
+    .section p b { color: #fff; font-weight: 500; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+        /* 100px = 30 + 38 de barra, más 16 de margen arriba y abajo */
+        min-height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 3rem 1.5rem 2rem;
+        position: relative;
+    }
+
+    /* Resplandor del hero. Tres reglas que hay que respetar:
+       - left/right a 0 → nunca desborda a los lados (eso provocaba scroll
+         horizontal) ni sobra por abajo.
+       - top:-100px lo sube por detrás de la barra flotante (30 de anuncio +
+         38 de nav + 16+16 de margen) para que el naranja llegue al borde de
+         la ventana en vez de arrancar con una franja negra. La nav es opaca,
+         así que la barra sigue negra; el naranja se ve por su margen y a
+         través del anuncio, que es translúcido.
+       - el último tramo del degradado llega a transparente al 78% de un radio
+         que ya es solo el 58% del alto. Se apaga muy dentro de la caja, así
+         que no puede aparecer el corte en seco que tenía antes.
+       La respiración lenta es la luz a la que va la polilla. */
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: -100px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse 95% 58% at 50% 0%,
+            rgba(255, 92, 32, 0.26) 0%,
+            rgba(255, 57, 11, 0.11) 38%,
+            rgba(255, 57, 11, 0) 78%);
+        animation: glow-breathe 8s ease-in-out infinite;
+    }
+
+    @keyframes glow-breathe {
+        0%, 100% { opacity: 0.8; }
+        50%      { opacity: 1; }
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    /* La capa de fuera: es la que aparece al cargar */
+    .moth-wrap {
+        position: relative;
+        margin-bottom: 2.1rem;
+        opacity: 0;
+    }
+
+    /* ---------- El claim, tatuado ----------
+       Ya no es una frase que se lee: es una marca de fondo. Va detrás del
+       símbolo, enorme, muy tenue y desenfocada, para que se intuya sin
+       llegar a leerse del todo. OJO: al quitar el splash, esta pasó a ser
+       la única aparición del claim en la home, y aquí no se lee. */
+    .tattoo {
+        position: absolute;
+        /* no centrado en el logo: cruzando su parte alta */
+        top: 28%;
+        left: 50%;
+        /* Los dos ejes por separado: scaleX ensancha las letras (con
+           letter-spacing solo se separarían sin cambiar de forma) y scaleY
+           las estira a lo alto. Así crece en vertical sin ganar ni un píxel
+           de ancho, que ya está al límite de la pantalla. El cuerpo de letra
+           baja para compensar el ensanchado. */
+        transform: translate(-50%, -50%) scale(1.22, 1.42);
+        /* detrás del logo, dentro del propio wrap */
+        z-index: -1;
+
+        font-family: 'Array-Wide', sans-serif;
+        font-size: clamp(2.4rem, 8.4vw, 9rem);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        line-height: 1;
+
+        color: rgba(255, 255, 255, 0.085);
+        filter: blur(5px);
+        pointer-events: none;
+        user-select: none;
+    }
+
+    /* La de dentro: su transform queda libre para el seguimiento del cursor */
+    .logo-mark {
+        width: clamp(72px, 17vw, 108px);
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade { opacity: 0; }
+
+    body.visible .moth-wrap { animation: fade-in 0.9s ease-out 0.1s forwards; }
+    body.visible .fade      { animation: fade-in 0.9s ease-out forwards; }
+
+    /* ---------- La fase, como barra de carga de la marca ----------
+       Cuatro bloques, uno por estadio de la metamorfosis: huevo, larva,
+       capullo y polilla adulta. Los cumplidos encendidos y los que faltan
+       apagados, para que se vea de un vistazo que esto va a algún sitio y
+       que todavía queda. */
+    .phase-meter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 2.2rem;
+        animation-delay: 0.25s;
+    }
+
+    .phase-bars {
+        display: flex;
+        gap: 7px;
+    }
+
+    .phase-bars i {
+        display: block;
+        width: 30px;
+        height: 6px;
+        border-radius: 3px;
+        background: #231f1c;
+    }
+
+    .phase-bars i.on {
+        background: linear-gradient(90deg, #ff390b, #ff8c2e);
+        box-shadow: 0 0 12px rgba(255, 92, 32, 0.45);
+    }
+
+    /* Con la barra encima, el texto ya no tiene que gritar */
+    .phase {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 0.28em;
+        color: #9a9a9a;
+        text-transform: uppercase;
+    }
+
+    /* Con el claim convertido en tatuaje ilegible, esta es la única frase del
+       hero que dice qué vende OSA. Iba a 13px en gris, o sea, tratada como
+       letra pequeña: ahora tiene el tamaño que le corresponde. */
+    .what {
+        font-size: clamp(1rem, 2.1vw, 1.24rem);
+        color: #c4c4c4;
+        margin-bottom: 2.4rem;
+        line-height: 1.6;
+        max-width: 420px;
+        animation-delay: 0.48s;
+    }
+
+    /* La polilla del hero: entra por un lado y deriva despacio, como si
+       estuviera dando vueltas alrededor de la luz. Hereda de .section-moth
+       el filtro de contraste y la máscara que le difumina los bordes. */
+    .hero-moth {
+        /* Ambos explícitos porque `.hero > *` los pisa: esa regla pone
+           position:relative y z-index:1 a todos los hijos directos del hero,
+           tiene la misma especificidad que .section-moth y va después en la
+           hoja. Sin esto la imagen entraba en el flujo, empujaba el contenido
+           fuera de pantalla y dejaba el hero vacío. */
+        position: absolute;
+        z-index: 0;
+        top: 16%;
+        left: auto;
+        right: 5%;
+        width: 300px;
+        max-width: 34%;
+        opacity: 0.13;
+        transform: rotate(-14deg);
+        animation: hero-moth-drift 26s ease-in-out infinite;
+    }
+
+    @keyframes hero-moth-drift {
+        0%, 100% { transform: translate(0, 0) rotate(-14deg); }
+        33%      { transform: translate(-46px, 30px) rotate(-6deg); }
+        66%      { transform: translate(18px, -24px) rotate(-19deg); }
+    }
+
+    .hero .btn-primary { animation-delay: 0.56s; }
+
+    .scroll-cue {
+        margin-top: 3.5rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #808080;
+        text-decoration: none;
+        animation-delay: 0.7s;
+        transition: color 0.2s;
+    }
+
+    .scroll-cue:hover { color: #fff; }
+
+    /* La flecha late despacio: quieta no invitaba a bajar */
+    .scroll-cue span {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        animation: cue-bob 2.4s ease-in-out infinite;
+    }
+
+    @keyframes cue-bob {
+        0%, 100% { transform: translateY(0);   opacity: 0.55; }
+        50%      { transform: translateY(5px); opacity: 1; }
+    }
+
+    /* ---------- Botones ---------- */
+    .btn-primary,
+    .btn-ghost,
+    .form-container button {
+        display: block;
+        width: 100%;
+        max-width: 270px;
+        box-sizing: border-box;
+        padding: 0.8rem 1rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .btn-primary {
+        background: #ff390b;
+        border: 1px solid #ff390b;
+        color: #fff;
+        margin: 0 auto;
+    }
+
+    .btn-primary:hover { background: #ff5a2e; border-color: #ff5a2e; }
+
+    .btn-note {
+        font-size: 0.72rem;
+        color: #8a8a8a;
+        line-height: 1.6;
+        text-align: center;
+        margin-top: 0.7rem;
+    }
+
+    /* ---------- Los dos actos de "por qué una polilla" ----------
+       La sección era tres párrafos centrados seguidos y no aguantaba la
+       vista. Ahora cada razón tiene su propia imagen, construida entera con
+       CSS: nada de fotos de terceros en una marca que se vende como hecha a
+       mano, y peso cero. */
+    .inner-wide { max-width: 900px; }
+
+    .beat {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 3rem;
+        margin-top: 3.5rem;
+    }
+
+    /* El segundo acto invierte los lados para que la página no caiga siempre
+       del mismo lado. order en vez de direction: no toca la lectura. */
+    .beat-flip .beat-visual { order: 2; }
+
+    .beat-text { text-align: left; }
+
+    .beat-n {
+        display: block;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.26em;
+        color: #ff6a1a;
+        margin-bottom: 0.9rem;
+    }
+
+    .section .beat-text p { text-align: left; }
+
+    .beat-close {
+        margin-top: 3.5rem;
+        padding-top: 2.4rem;
+        border-top: 1px solid #1c1c1c;
+    }
+
+    /* --- 01 · la página del cuaderno de bitácora ---
+       Papel de verdad: crema tostado, rayado azul grisáceo, margen rojo y
+       tinta oscura. La clave de que cuele es que el interlineado del texto
+       (26px) sea exactamente el paso del rayado, para que las palabras se
+       apoyen en las rayas en vez de flotar encima. */
+    .logbook {
+        --linea: 26px;
+        --margen: 3rem;
+
+        position: relative;
+        padding: 1.5rem 1.4rem 1.6rem var(--margen);
+        border-radius: 2px;
+        background-color: #ded2b4;
+        background-image:
+            /* el rayado */
+            repeating-linear-gradient(180deg,
+                transparent 0,
+                transparent calc(var(--linea) - 1px),
+                rgba(74, 96, 120, 0.32) calc(var(--linea) - 1px),
+                rgba(74, 96, 120, 0.32) var(--linea)),
+            /* las esquinas, más tostadas: el papel lleva 78 años ahí */
+            radial-gradient(120% 90% at 50% 45%,
+                rgba(255, 250, 235, 0.5) 0%,
+                rgba(180, 155, 110, 0) 62%),
+            linear-gradient(160deg, #e3d8bc 0%, #d5c7a3 55%, #c9b995 100%);
+        /* apoyado sobre la mesa negra, no pegado */
+        box-shadow:
+            0 20px 45px rgba(0, 0, 0, 0.6),
+            0 2px 6px rgba(0, 0, 0, 0.4);
+        font-family: 'Courier New', Courier, monospace;
+        transform: rotate(-1.2deg);
+    }
+
+    /* El margen rojo del cuaderno */
+    .logbook::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(var(--margen) - 0.7rem);
+        width: 1px;
+        background: rgba(178, 62, 48, 0.65);
+    }
+
+    .logbook-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        height: var(--linea);
+        align-items: center;
+        margin-bottom: calc(var(--linea) / 2);
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #4a3a20;
+    }
+
+    .logbook-rows p {
+        font-size: 0.74rem;
+        /* mismo paso que el rayado: el texto se sienta en la línea */
+        line-height: var(--linea);
+        color: #1c1a13;
+        text-align: left;
+    }
+
+    /* La hora, en su columna, como en una hoja de incidencias de verdad */
+    .logbook-rows i {
+        display: inline-block;
+        width: 3.6em;
+        font-style: normal;
+        color: #26221a;
+    }
+
+    .logbook-note {
+        font-size: 0.79rem;
+        line-height: var(--linea);
+        /* la frase que importa, subrayada a mano en rojo */
+        color: #100e08;
+        text-align: left;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: rgba(178, 62, 48, 0.8);
+        text-decoration-thickness: 1px;
+    }
+
+    /* La polilla pegada con celo. Es el símbolo de OSA haciendo de bicho. */
+    .logbook-specimen {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+        padding: 1.1rem 0 0.5rem;
+    }
+
+    .logbook-moth {
+        display: block;
+        width: 50px;
+        aspect-ratio: 46 / 49;
+        /* Parda y oscura: es un bicho seco sobre papel claro */
+        background-color: #4a3a28;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        transform: rotate(8deg);
+    }
+
+    /* Las dos tiras de celo, una a cada lado */
+    /* Celo sobre papel: no es blanco, es un brillo amarillento que oscurece
+       un poco lo que hay debajo y tiene los cantos marcados. */
+    .tape {
+        display: block;
+        width: 40px;
+        height: 15px;
+        background: linear-gradient(180deg,
+            rgba(255, 250, 225, 0.42),
+            rgba(214, 196, 152, 0.34));
+        border-left: 1px solid rgba(120, 104, 72, 0.3);
+        border-right: 1px solid rgba(120, 104, 72, 0.3);
+        box-shadow: 0 1px 2px rgba(90, 76, 48, 0.28);
+    }
+
+    .logbook-specimen .tape:first-child  { transform: rotate(-16deg) translateX(11px); }
+    .logbook-specimen .tape:last-child   { transform: rotate(-16deg) translateX(-11px); }
+
+    /* --- 02 · la habitación a oscuras, con el setup dentro ---
+       Vista de frente y plana: sin fingir ángulos, que en CSS siempre cantan.
+       Todo lo que se apoya en la mesa comparte la misma línea (--mesa), y el
+       teclado va delante con z-index, que es como se lee la profundidad en
+       una ilustración plana. */
+    .room {
+        --mesa: 72px;   /* altura de la superficie de la mesa desde abajo */
+
+        position: relative;
+        height: 290px;
+        overflow: hidden;
+        border: 1px solid #1c1c1c;
+        border-radius: 4px;
+        background: linear-gradient(180deg, #0a0a0a, #0d0d0d);
+    }
+
+    /* El tablero */
+    .desk-top {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(var(--mesa) - 8px);
+        height: 8px;
+        background: linear-gradient(180deg, #1d1913, #100d09 60%, #0d0d0d);
+        z-index: 3;
+    }
+
+    /* --- Los dos monitores --- */
+    .screens {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: var(--mesa);
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 22px;
+        z-index: 2;
+    }
+
+    .monitor { width: 88px; }
+
+    .monitor-screen {
+        display: block;
+        height: 68px;
+        border: 1px solid #2e2820;
+        border-radius: 3px;
+        /* La pantalla encendida: más viva arriba, como un fondo oscuro con
+           luz propia. Es la fuente principal del resplandor. */
+        background:
+            radial-gradient(120% 100% at 50% 15%,
+                rgba(255, 138, 62, 0.55) 0%,
+                rgba(255, 78, 24, 0.22) 45%,
+                rgba(255, 57, 11, 0.08) 100%),
+            #0e0a07;
+        box-shadow:
+            0 0 26px rgba(255, 92, 32, 0.28),
+            0 0 70px rgba(255, 57, 11, 0.18);
+        animation: screen-flicker 7s ease-in-out infinite;
+    }
+
+    /* El segundo monitor no late a la vez: si no, parece un solo objeto */
+    .monitor:last-child .monitor-screen { animation-delay: -3.1s; }
+
+    @keyframes screen-flicker {
+        0%, 100% { opacity: 0.88; }
+        50%      { opacity: 1; }
+    }
+
+    .monitor-neck {
+        display: block;
+        width: 11px;
+        height: 13px;
+        margin: 0 auto;
+        background: #2b251e;
+    }
+
+    .monitor-base {
+        display: block;
+        width: 48px;
+        height: 4px;
+        margin: 0 auto;
+        border-radius: 2px 2px 0 0;
+        background: #2b251e;
+    }
+
+    /* --- La lámpara de escritorio --- */
+    /* z-index 1, por debajo de los monitores: la lámpara está a un lado y
+       algo detrás, así que lo poco que su cono invade la pantalla queda
+       tapado por ella, que es lo que pasaría de verdad. */
+    .lamp {
+        position: absolute;
+        left: 2%;
+        bottom: var(--mesa);
+        width: 70px;
+        height: 132px;
+        z-index: 1;
+    }
+
+    .lamp-base {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 34px;
+        height: 4px;
+        border-radius: 2px 2px 0 0;
+        background: #2b251e;
+    }
+
+    .lamp-stem {
+        position: absolute;
+        left: 15px;
+        bottom: 3px;
+        width: 3px;
+        height: 84px;
+        background: #2b251e;
+        transform-origin: bottom center;
+        transform: rotate(-7deg);
+    }
+
+    /* El brazo sale del mástil hacia la mesa */
+    .lamp-arm {
+        position: absolute;
+        left: 12px;
+        bottom: 84px;
+        width: 46px;
+        height: 3px;
+        background: #2b251e;
+        transform-origin: left center;
+        transform: rotate(18deg);
+    }
+
+    /* La pantalla de la lámpara: un trapecio mirando abajo */
+    .lamp-head {
+        position: absolute;
+        left: 50px;
+        bottom: 82px;
+        width: 26px;
+        height: 17px;
+        background: #362e25;
+        clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+    }
+
+    /* El cono de luz, del cabezal hacia la mesa. Es lo que hace que la
+       lámpara se lea como encendida, así que tiene que verse de verdad:
+       con poca opacidad se lo tragaba el negro. */
+    .lamp-cone {
+        position: absolute;
+        left: 26px;
+        bottom: -4px;
+        width: 92px;
+        height: 90px;
+        clip-path: polygon(30% 0, 62% 0, 100% 100%, 0 100%);
+        background: linear-gradient(180deg,
+            rgba(255, 168, 92, 0.52) 0%,
+            rgba(255, 122, 46, 0.24) 40%,
+            rgba(255, 88, 28, 0.06) 78%,
+            rgba(255, 80, 25, 0) 100%);
+        filter: blur(3px);
+        animation: room-pulse 6s ease-in-out infinite;
+    }
+
+    /* El charco de luz que deja la lámpara sobre la mesa. Va suelto y con
+       z-index 4 porque tiene que pintarse ENCIMA del tablero; dentro de
+       .lamp se lo comía el tablero, que va por delante de la lámpara. */
+    .desk-pool {
+        position: absolute;
+        left: 2%;
+        bottom: calc(var(--mesa) - 9px);
+        width: 132px;
+        height: 20px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at center,
+            rgba(255, 150, 70, 0.30) 0%,
+            rgba(255, 100, 36, 0) 70%);
+        z-index: 4;
+    }
+
+    @keyframes room-pulse {
+        0%, 100% { opacity: 0.78; }
+        50%      { opacity: 1; }
+    }
+
+    /* --- Lo que hay sobre la mesa --- */
+    /* El deskpad: solo una superficie más oscura y algo más ancha que el
+       teclado. Sin logo ni forma reconocible: marca el hueco, no enseña
+       el producto. */
+    .pad {
+        position: absolute;
+        left: 50%;
+        bottom: var(--mesa);
+        width: 148px;
+        height: 5px;
+        transform: translateX(-50%);
+        border-radius: 1px;
+        background: #131110;
+        z-index: 4;
+    }
+
+    .kb {
+        position: absolute;
+        left: 50%;
+        bottom: calc(var(--mesa) + 3px);
+        width: 104px;
+        height: 9px;
+        transform: translateX(-52%) translateX(-14px);
+        border-radius: 2px;
+        background: linear-gradient(180deg, #2a2621, #16130f);
+        z-index: 5;
+    }
+
+    .mouse {
+        position: absolute;
+        left: 50%;
+        bottom: calc(var(--mesa) + 3px);
+        width: 13px;
+        height: 8px;
+        transform: translateX(46px);
+        border-radius: 6px 6px 3px 3px;
+        background: linear-gradient(180deg, #2a2621, #16130f);
+        z-index: 5;
+    }
+
+    /* La polilla, entrando desde el borde y subiendo hacia las pantallas */
+    .room-moth {
+        position: absolute;
+        left: 50%;
+        bottom: calc(var(--mesa) + 10px);
+        z-index: 6;
+        width: 24px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        animation: moth-drift 9s ease-in-out infinite;
+    }
+
+    /* No va recta: revolotea, como van de verdad. Entra por la derecha a la
+       altura de la mesa y acaba delante de las pantallas. */
+    @keyframes moth-drift {
+        0%   { transform: translate(120px, 6px) rotate(-10deg);  opacity: 0.25; }
+        20%  { transform: translate(72px, -34px) rotate(8deg);   opacity: 0.6; }
+        40%  { transform: translate(26px, -12px) rotate(-6deg);  opacity: 0.8; }
+        60%  { transform: translate(-16px, -62px) rotate(11deg); opacity: 0.95; }
+        80%  { transform: translate(44px, -30px) rotate(-7deg);  opacity: 0.65; }
+        100% { transform: translate(120px, 6px) rotate(-10deg);  opacity: 0.25; }
+    }
+
+    /* 820 y no 760: por debajo de eso la columna del cuaderno se queda al
+       filo del ancho de "First actual case of bug being found." y la línea
+       revienta. Mejor apilar antes que apurar. */
+    @media (max-width: 820px) {
+        /* En móvil no hay sitio para dos columnas: la imagen encima del texto
+           siempre, también en el acto invertido. */
+        .beat {
+            grid-template-columns: 1fr;
+            gap: 1.8rem;
+            margin-top: 3rem;
+        }
+        .beat-flip .beat-visual { order: 0; }
+        .beat-text, .section .beat-text p { text-align: center; }
+        .logbook { transform: none; }
+        /* La mesa se queda igual de alta pero con menos aire arriba */
+        .room { height: 250px; }
+        .lamp { left: 5%; }
+    }
+
+    /* ---------- Sección: qué es un drop ----------
+       La vida de un drop leída de izquierda a derecha. Eran tres tarjetas
+       sueltas y en realidad son una secuencia en el tiempo, así que ahora es
+       una sola línea con paradas. El último punto va hueco y el tramo que
+       llega hasta él, de puntos: es lo que todavía no está escrito. */
+    .lifeline {
+        --punto: 11px;
+        --hueco: 1.4rem;
+        /* dónde cae el raíl: alto de la etiqueta + medio punto */
+        --raíl: calc(1.5rem + var(--punto) / 2);
+
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: var(--hueco);
+        margin-top: 3.2rem;
+    }
+
+    /* Los puntos se apoyan al inicio de su columna, así que el raíl tiene que
+       morir en el CENTRO de un punto, no en el borde del contenedor. Con 5
+       columnas de ancho c y hueco g, el centro del punto n está a
+       (n-1)·(c+g) + punto/2, y de ahí salen los dos calc de abajo. Sin esto
+       la línea se pasaba de largo y seguía hasta el borde derecho. */
+
+    /* El raíl recorrido: del primer punto al cuarto */
+    .lifeline::before {
+        content: "";
+        position: absolute;
+        top: var(--raíl);
+        left: calc(var(--punto) / 2);
+        right: calc(40% - 0.6 * var(--hueco) - var(--punto) / 2);
+        height: 1px;
+        background: linear-gradient(90deg, #ff390b, #8a3315);
+    }
+
+    /* El tramo sin escribir: del cuarto punto al quinto, y ahí se acaba */
+    .lifeline::after {
+        content: "";
+        position: absolute;
+        top: var(--raíl);
+        left: calc(60% + 0.6 * var(--hueco) + var(--punto) / 2);
+        right: calc(20% - 0.8 * var(--hueco) - var(--punto) / 2);
+        height: 1px;
+        background-image: linear-gradient(90deg, #3a3a3a 50%, transparent 50%);
+        background-size: 7px 1px;
+    }
+
+    .stop { position: relative; }
+
+    .stop-label {
+        display: block;
+        /* altura fija: es lo que mantiene todos los puntos en la misma línea */
+        height: 1.5rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #fff;
+        white-space: nowrap;
+    }
+
+    .stop-dot {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: var(--punto);
+        height: var(--punto);
+        border-radius: 50%;
+        background: #ff390b;
+        box-shadow: 0 0 0 4px #0d0d0d, 0 0 12px rgba(255, 57, 11, 0.55);
+    }
+
+    /* La última parada todavía no ha pasado: punto hueco y texto apagado */
+    .is-open .stop-label { color: #808080; }
+
+    .is-open .stop-dot {
+        background: #0d0d0d;
+        border: 1px solid #4a4a4a;
+        box-shadow: 0 0 0 4px #0d0d0d;
+    }
+
+    .is-open .stop-text { color: #808080; }
+
+    .section .stop-text {
+        margin-top: 1.1rem;
+        font-size: 0.78rem;
+        line-height: 1.7;
+        color: #8a8a8a;
+        text-align: left;
+    }
+
+    /* En vertical por debajo de 820: cinco columnas no caben en un móvil,
+       y la línea funciona igual de bien de arriba abajo. */
+    @media (max-width: 820px) {
+        .lifeline {
+            grid-template-columns: 1fr;
+            gap: 0;
+            padding-left: 2rem;
+            margin-top: 2.6rem;
+        }
+
+        /* El raíl pasa a ser vertical. Aquí las paradas no miden todas igual,
+           así que el corte entre lo recorrido y lo pendiente se fija con el
+           alto de la última, que es la que aún no ha pasado. */
+        .lifeline::before {
+            top: calc(var(--punto) / 2);
+            bottom: 5.5rem;
+            /* sin restar el padding: los puntos ya caen en el borde izquierdo
+               de .lifeline, así que el raíl va en su centro */
+            left: calc(var(--punto) / 2);
+            right: auto;
+            width: 1px;
+            height: auto;
+            background: linear-gradient(180deg, #ff390b, #8a3315);
+        }
+
+        .lifeline::after {
+            top: auto;
+            bottom: 3.2rem;
+            height: 2.3rem;
+            /* sin restar el padding: los puntos ya caen en el borde izquierdo
+               de .lifeline, así que el raíl va en su centro */
+            left: calc(var(--punto) / 2);
+            right: auto;
+            width: 1px;
+            background-image: linear-gradient(180deg, #3a3a3a 50%, transparent 50%);
+            background-size: 1px 7px;
+        }
+
+        .stop { padding-bottom: 1.8rem; }
+        .stop:last-child { padding-bottom: 0; }
+
+        /* La etiqueta se pone al lado del punto, no encima */
+        .stop-label { height: auto; margin-bottom: 0.5rem; }
+
+        .stop-dot {
+            position: absolute;
+            top: 1px;
+            left: -2rem;
+        }
+
+        .section .stop-text { margin-top: 0.4rem; }
+    }
+
+    /* ---------- Sección: la lista ---------- */
+    .actions { width: 100%; max-width: 270px; margin: 0 auto; }
+
+    .divider {
+        width: 100%;
+        max-width: 270px;
+        margin: 1.5rem auto 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #262626;
+    }
+
+    .divider span {
+        font-size: 0.63rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #808080;
+        white-space: nowrap;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 270px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container input[type="email"] {
+        background: transparent;
+        border: 1px solid #2e2e2e;
+        border-bottom: none;
+        box-sizing: border-box;
+        padding: 0.75rem 1rem;
+        font-family: 'Geist', sans-serif;
+        /* 16px mínimo: por debajo, iOS hace zoom al enfocar el campo */
+        font-size: 1rem;
+        color: #fff;
+        outline: none;
+        width: 100%;
+        transition: border-color 0.2s;
+    }
+
+    .form-container input[type="email"]:focus { border-color: #666; }
+    .form-container input[type="email"]::placeholder { color: #808080; }
+
+    .form-container button {
+        background: transparent;
+        border: 1px solid #2e2e2e;
+        color: #ddd;
+    }
+
+    .form-container button:hover { border-color: #666; color: #fff; }
+    .form-container button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-msg {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-align: center;
+        margin-top: 0.75rem;
+        min-height: 1em;
+        text-transform: uppercase;
+    }
+
+    .form-msg.success { color: #ff6a1a; }
+    .form-msg.error   { color: #8c4a4a; }
+
+    .btn-ghost {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6em;
+        background: transparent;
+        border: 1px solid #2e2e2e;
+        color: #bbb;
+        margin: 1.2rem auto 0;
+    }
+
+    .btn-ghost:hover { border-color: #666; color: #fff; }
+    .btn-ghost:hover .lock { opacity: 1; }
+
+    .lock {
+        width: 13px;
+        height: 13px;
+        stroke: #ff390b;
+        fill: none;
+        stroke-width: 2.2;
+        opacity: 0.9;
+        transition: opacity 0.2s;
+        flex-shrink: 0;
+    }
+
+    /* ---------- Pie ----------
+       Medidas calcadas de mertra.com: píldora de 60px de alto, radio 19px,
+       relleno lateral 16px, margen 25px, y una rejilla de tres columnas con
+       iconos a la izquierda, símbolo centrado y controles a la derecha.
+       No va fija: aparece al final, como la suya. */
+    footer {
+        padding: 0 25px 25px;
+        margin-top: 4rem;
+        /* Por encima de la sección clara, que lleva z-index para tapar su
+           costura. Sin esto el panel de ayuda sube hacia esa sección y queda
+           debajo: solo asomaba su última línea. */
+        position: relative;
+        z-index: 2;
+    }
+
+    .footer-pill {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: 60px;
+        padding: 0 16px;
+        border: 1px solid #1c1c1c;
+        border-radius: 19px;
+        background: #0d0d0d;
+    }
+
+    .footer-social {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .footer-social a {
+        display: block;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: #fff; }
+
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    /* El <a> es el hijo de la rejilla, así que el centrado va aquí */
+    .footer-pill > a { justify-self: center; line-height: 0; }
+
+    .footer-logo {
+        /* span es inline: sin display:block ignora ancho y alto */
+        display: block;
+        width: 34px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        justify-self: center;
+    }
+
+    .footer-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .footer-help {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        /* 14px: el mismo que "NEED HELP?" de MERTRA */
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-help:hover { color: #fff; }
+
+    .footer-help .chev {
+        width: 10px;
+        height: 10px;
+        transition: transform 0.25s;
+    }
+
+    .footer-help[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+    /* El panel sube desde la píldora, como el de MERTRA */
+    .footer-panel {
+        position: absolute;
+        right: 16px;
+        bottom: calc(100% + 8px);
+        min-width: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        background: #0d0d0d;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
+    }
+
+    .footer-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .footer-panel a {
+        padding: 0.5rem 16px;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        /* 14px: el mismo que los enlaces del panel de MERTRA */
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-panel a:hover { color: #fff; }
+
+    @media (max-width: 560px) {
+        footer { padding: 0 12px 12px; }
+        .footer-pill { padding: 0 12px; }
+        .footer-help { font-size: 13px; letter-spacing: 0.06em; }
+        .footer-social { gap: 14px; }
+    }
+
+    /* ---------- Aparición al hacer scroll ---------- */
+    .reveal {
+        opacity: 0;
+        transform: translateY(12px);
+        transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .reveal { opacity: 1; transform: none; transition: none; }
+        .hero::before { animation: none; opacity: 1; }
+        .scroll-cue span { animation: none; opacity: 1; }
+        .hero-moth { animation: none; }
+        .lamp-cone { animation: none; opacity: 1; }
+        .monitor-screen { animation: none; opacity: 1; }
+        /* Sin movimiento la polilla se queda quieta, delante de las pantallas */
+        .room-moth { animation: none; opacity: 0.95; transform: translate(-16px, -62px); }
+    }
+
+    @media (max-width: 560px) {
+        /* En móvil no cabe todo en tres columnas: se cae IG/TT y el wordmark
+           deja de reservar columna para que los enlaces respiren. */
+        .topbar {
+            top: 0.6rem;
+            margin: 0.6rem;
+            border-radius: 9px;
+        }
+        .nav {
+            grid-template-columns: auto 1fr;
+            height: 36px;
+            padding: 0 0.9rem;
+            gap: 0.8rem;
+        }
+        .nav-wordmark { width: 36px; }
+        .nav-links { justify-content: flex-end; gap: 1rem; }
+        /* Baja lo justo para que las tres palabras entren en un móvil
+           estrecho sin volver al tamaño diminuto de antes */
+        .nav-links a { font-size: 12px; letter-spacing: 0.08em; }
+        .announce { font-size: 10px; letter-spacing: 0.1em; }
+        .nav-utils { display: none; }
+        .section { padding: 5rem 1.2rem; }
+
+        /* ---------- Hero ----------
+           El tatuaje se salía 61px por los lados. Aquí no se estira tanto:
+           en una pantalla estrecha, estirado además de grande, las letras se
+           deforman y pierde el aire de tinta. */
+        .tattoo {
+            /* Encima del logo, no detrás: en pantalla pequeña el símbolo se
+               comía media frase y no se llegaba a leer nada. */
+            top: -22px;
+            font-size: 9.2vw;
+            transform: translate(-50%, -50%) scale(1.06, 1.35);
+            /* Comprobado en móvil real: con la opacidad y el desenfoque del
+               escritorio la frase no llega a leerse en una pantalla pequeña.
+               Aquí pesa casi el doble y se desenfoca la mitad. */
+            color: rgba(255, 255, 255, 0.16);
+            filter: blur(2.6px);
+        }
+
+        /* Se iba al centro y se comía la línea de fase. Abajo y pequeña. */
+        .hero-moth {
+            top: auto;
+            bottom: 6%;
+            /* La rotación de 14 grados ensancha su caja envolvente un 40%
+               (150px de imagen ocupan 213), y como se ancla por `right` ese
+               exceso se sale por la derecha. De ahí los 32px de margen. */
+            right: 32px;
+            width: 150px;
+            max-width: 42%;
+            opacity: 0.1;
+        }
+
+        .what { max-width: 300px; }
+
+        /* ---------- Los dos actos ----------
+           La habitación se queda con demasiado vacío bajo la mesa cuando
+           encoge: se sube la línea de la mesa y se recorta el alto. */
+        .room { height: 210px; --mesa: 56px; }
+        .monitor { width: 74px; }
+        .monitor-screen { height: 56px; }
+        .screens { gap: 16px; }
+        .lamp { width: 56px; height: 108px; }
+        .kb { width: 84px; }
+        .pad { width: 120px; }
+
+        .logbook { --margen: 2.5rem; padding-right: 1rem; }
+
+        /* ---------- Qué es un drop ----------
+           A 420px de ancho la polilla ocupaba la pantalla entera y el texto
+           se leía a través de ella. */
+        .moth-dorada {
+            width: 230px;
+            right: -8%;
+            top: 2%;
+            opacity: 0.3;
+        }
+
+        /* ---------- Sección clara ----------
+           OJO: la regla `.section` de arriba le baja el relleno a 5rem, pero
+           su fundido oscuro ocupa el 24% del alto (unos 185px). Sin este
+           relleno el titular caía dentro del negro y no se leía. */
+        .section-clara {
+            padding-top: 11rem;
+            padding-bottom: 7rem;
+        }
+
+        .section-clara .inner p { font-size: 0.94rem; }
+
+        .moth-clara {
+            width: 330px;
+            height: 210px;
+            bottom: 3%;
+            left: -4%;
+            opacity: 0.16;
+        }
+
+        .section-moth { max-width: 96%; }
+    }
+
+
+    /* ---------- Escritorio ----------
+       En pantallas grandes el texto de lectura se quedaba pequeño en mitad
+       de mucho espacio vacío. Sube solo el cuerpo de texto, no los titulares
+       (que ya escalan con clamp). */
+    @media (min-width: 900px) {
+        .section p { font-size: 1rem; line-height: 1.9; }
+        .beat-n { font-size: 0.68rem; }
+        .section .stop-text { font-size: 0.84rem; }
+        .stop-label { font-size: 0.68rem; }
+        .btn-note { font-size: 0.84rem; }
+        .section-clara .inner p { font-size: 1.04rem; }
+    }
+
+    /* ---------- Grano ----------
+       Una capa finísima de ruido sobre todo. El negro puro se lee como un
+       vacío; con grano se lee como un material. Va en un SVG incrustado, así
+       que no añade ninguna petición ni ningún archivo. */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+</style>
+</head>
+<body class="visible">
+
+    <div class="topbar">
+    <div class="announce">Drop 001 próximamente</div>
+
+    <nav class="nav">
+        <a class="nav-brand" href="index.html" aria-label="OSA"><span class="nav-wordmark"></span></a>
+        <div class="nav-links">
+            <a href="timeline.html">Timeline</a>
+            <a href="pistas.html">Pistas</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="fondos.html">Fondos</a>
+        </div>
+        <div class="nav-utils">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">IG</a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener">TT</a>
+        </div>
+    </nav>
+    </div>
+
+    <!-- ---------- HERO ---------- -->
+    <header class="hero">
+        <!-- Una polilla de verdad, cruzando el hero muy despacio.
+             Sin loading="lazy" a propósito: está en la primera pantalla. -->
+        <img class="section-moth hero-moth" src="img/polilla2.webp" alt="" aria-hidden="true">
+
+        <!-- La capa de fuera hace la entrada; la de dentro la deja libre para
+             que el cursor pueda mover la polilla sin pisar la animación. -->
+        <div class="moth-wrap">
+            <!-- El claim, tatuado detrás del símbolo. No está para leerse:
+                 va desenfocado y a muy poca opacidad, como tinta vieja. -->
+            <span class="tattoo" aria-hidden="true">domina tu espacio</span>
+            <div class="logo-mark"></div>
+        </div>
+
+        <div class="phase-meter fade">
+            <span class="phase-bars" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i></span>
+            <p class="phase">Fase II · Larva</p>
+        </div>
+        <p class="what fade">Accesorios para tu escritorio.<br>En drops limitados.</p>
+        <a class="btn-primary fade" href="tarjeta.html">Añadir la tarjeta</a>
+        <a class="scroll-cue fade" href="#polilla">Por qué una polilla<span>↓</span></a>
+    </header>
+
+    <!-- ---------- POR QUÉ UNA POLILLA ---------- -->
+    <section class="section" id="polilla">
+        <!-- Polilla real de fondo. El fondo de la foto ya es negro, así que
+             con mix-blend-mode se funde sola: nada de recortes. -->
+        <img class="section-moth" src="img/polilla1.webp" alt="" loading="lazy" aria-hidden="true">
+
+        <div class="inner inner-wide">
+            <h2 class="reveal">Por qué una polilla</h2>
+
+            <!-- 01 · el bug de 1947, recreado como la página del cuaderno -->
+            <div class="beat reveal">
+                <div class="beat-visual">
+                    <div class="logbook">
+                        <div class="logbook-top">
+                            <span>Mark II · Harvard</span>
+                            <span>9 · IX · 1947</span>
+                        </div>
+                        <div class="logbook-rows">
+                            <p><i>15:45</i> Relay #70 Panel F</p>
+                            <p><i></i> (moth) in relay</p>
+                        </div>
+                        <p class="logbook-note">First actual case of bug being found.</p>
+                        <div class="logbook-specimen">
+                            <span class="tape"></span>
+                            <span class="logbook-moth"></span>
+                            <span class="tape"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="beat-text">
+                    <span class="beat-n">01</span>
+                    <p>En 1947, en Harvard, un ordenador falló. Al abrirlo encontraron una polilla muerta entre los contactos. La pegaron con celo al cuaderno de incidencias y escribieron al lado: <b>primer caso real de un bug encontrado</b>.</p>
+                </div>
+            </div>
+
+            <!-- 02 · la luz -->
+            <div class="beat beat-flip reveal">
+                <div class="beat-visual">
+                    <div class="room">
+                        <div class="lamp">
+                            <span class="lamp-cone"></span>
+                            <span class="lamp-stem"></span>
+                            <span class="lamp-arm"></span>
+                            <span class="lamp-head"></span>
+                            <span class="lamp-base"></span>
+                        </div>
+
+                        <div class="screens">
+                            <div class="monitor">
+                                <span class="monitor-screen"></span>
+                                <span class="monitor-neck"></span>
+                                <span class="monitor-base"></span>
+                            </div>
+                            <div class="monitor">
+                                <span class="monitor-screen"></span>
+                                <span class="monitor-neck"></span>
+                                <span class="monitor-base"></span>
+                            </div>
+                        </div>
+
+                        <span class="desk-top"></span>
+                        <span class="desk-pool"></span>
+                        <span class="pad"></span>
+                        <span class="kb"></span>
+                        <span class="mouse"></span>
+
+                        <span class="room-moth"></span>
+                    </div>
+                </div>
+                <div class="beat-text">
+                    <span class="beat-n">02</span>
+                    <p>La otra razón es más simple. Las polillas van hacia la luz. Si entra una en tu habitación a oscuras, no va a la lámpara: <b>va a lo que más ilumina, que es tu setup</b>.</p>
+                </div>
+            </div>
+
+            <p class="beat-close reveal">Las dos cosas apuntan al mismo sitio. Por eso el símbolo de OSA no es una inicial ni una forma bonita: <b>es el bicho que vive donde tú trabajas</b>.</p>
+        </div>
+    </section>
+
+    <!-- ---------- QUÉ ES UN DROP ---------- -->
+    <section class="section" id="drop">
+        <!-- Esta es la polilla con color propio (dorado y violeta). Sobre
+             oscuro y con screen se ve tal cual, sin tocarle el color. -->
+        <img class="section-moth moth-dorada" src="img/polilla3.webp" alt="" loading="lazy" aria-hidden="true">
+
+        <div class="inner inner-wide">
+            <h2 class="reveal">Qué es un drop</h2>
+            <p class="reveal">OSA no tiene catálogo permanente. Cada drop es una colección cerrada, con una cantidad decidida de antemano. Cuando se agota, no hay garantía de que vuelva. No es una táctica de urgencia: es la única forma de hacer bien algo cuando lo haces tú.</p>
+
+            <!-- La vida de un drop, de principio a final. El último punto va
+                 hueco y con la línea de puntos: todavía no está escrito. -->
+            <div class="lifeline reveal">
+                <div class="stop">
+                    <span class="stop-label">Se fabrica</span>
+                    <span class="stop-dot"></span>
+                    <p class="stop-text">Una cantidad concreta, decidida antes de empezar. Ni una más.</p>
+                </div>
+                <div class="stop">
+                    <span class="stop-label">Los primeros</span>
+                    <span class="stop-dot"></span>
+                    <p class="stop-text">Los de la tarjeta entran antes, avisados en la pantalla de bloqueo.</p>
+                </div>
+                <div class="stop">
+                    <span class="stop-label">Abre</span>
+                    <span class="stop-dot"></span>
+                    <p class="stop-text">La tienda abre para todos. Sin preventa y sin reserva.</p>
+                </div>
+                <div class="stop">
+                    <span class="stop-label">Se agota</span>
+                    <span class="stop-dot"></span>
+                    <p class="stop-text">Cuando se acaban las unidades, cierra. La colección queda cerrada.</p>
+                </div>
+                <div class="stop is-open">
+                    <span class="stop-label">¿Vuelve?</span>
+                    <span class="stop-dot"></span>
+                    <p class="stop-text">Algunas piezas vuelven. Otras no. Nunca de la misma forma.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ---------- LA LISTA ---------- -->
+    <section class="section section-clara" id="lista">
+        <img class="section-moth moth-clara" src="img/polilla2.webp" alt="" loading="lazy" aria-hidden="true">
+
+        <div class="inner">
+            <h2 class="reveal">Entérate del Drop 001</h2>
+            <p class="reveal">Cuando el Drop 001 abra, las unidades no van a durar. Los que tienen la tarjeta lo saben en la pantalla de bloqueo, en el momento en que pasa.</p>
+
+            <div class="actions reveal" style="margin-top: 2.6rem;">
+                <a class="btn-primary" href="tarjeta.html">Añadir la tarjeta</a>
+                <p class="btn-note">Se guarda en tu Wallet.<br>Te avisa antes que nadie.</p>
+            </div>
+
+            <div class="divider reveal"><span>o por email</span></div>
+
+            <div class="form-container reveal">
+                <input type="email" id="email-input" placeholder="Tu email" autocomplete="email" />
+                <button id="submit-btn" type="button" onclick="submitEmail()">Apúntate</button>
+                <p class="form-msg" id="form-msg"></p>
+            </div>
+
+            <a class="btn-ghost reveal" href="fondos.html">
+                <svg class="lock" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+                </svg>
+                Fondos gratis
+            </a>
+        </div>
+    </section>
+
+    <!-- ---------- PIE ---------- -->
+    <footer>
+        <div class="footer-pill">
+
+            <div class="footer-social">
+                <a href="https://instagram.com/osadrops" target="_blank" rel="noopener" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.2"></rect>
+                        <circle cx="12" cy="12" r="4.2"></circle>
+                        <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle>
+                    </svg>
+                </a>
+                <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16.6,5.82A4.28,4.28 0 0,1 14.7,2.5h-3.1v12.4a2.6,2.6 0 1,1 -2.6,-2.6c.27,0 .53.04.78.12V9.2a5.7,5.7 0 0,0 -.78,-.06 5.7,5.7 0 1,0 5.7,5.7V8.6a7.3,7.3 0 0,0 4.2,1.34V6.86a4.28,4.28 0 0,1 -2.3,-1.04Z"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <a href="index.html" aria-label="OSA"><span class="footer-logo"></span></a>
+
+            <div class="footer-controls">
+                <button class="footer-help" id="help-btn" type="button" aria-expanded="false" aria-controls="help-panel">
+                    ¿Ayuda?
+                    <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                        <path d="M6 15l6-6 6 6"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="footer-panel" id="help-panel">
+                <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">Contacto</a>
+                <a href="timeline.html">Timeline</a>
+                <a href="terminos.html">Términos</a>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        (function revealOnScroll() {
+            const items = document.querySelectorAll('.reveal');
+
+            // Sin IntersectionObserver, se muestra todo y punto
+            if (!('IntersectionObserver' in window)) {
+                items.forEach(el => el.classList.add('in'));
+                return;
+            }
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -12% 0px' });
+
+            items.forEach(el => io.observe(el));
+        })();
+
+        (function helpPanel() {
+            const btn   = document.getElementById('help-btn');
+            const panel = document.getElementById('help-panel');
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = panel.classList.toggle('open');
+                btn.setAttribute('aria-expanded', open);
+            });
+
+            // Clic fuera o Escape lo cierran
+            document.addEventListener('click', (e) => {
+                if (!panel.contains(e.target)) {
+                    panel.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    panel.classList.remove('open');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        })();
+
+        async function submitEmail() {
+            const email = document.getElementById('email-input').value.trim();
+            const msg   = document.getElementById('form-msg');
+            const btn   = document.getElementById('submit-btn');
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                msg.textContent = 'introduce un email válido';
+                msg.className = 'form-msg error';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '...';
+            msg.textContent = '';
+
+            try {
+                const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=WqTzTK', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json', 'revision': '2023-12-15' },
+                    body: JSON.stringify({
+                        data: {
+                            type: 'subscription',
+                            attributes: {
+                                profile: { data: { type: 'profile', attributes: { email } } }
+                            },
+                            relationships: {
+                                list: { data: { type: 'list', id: 'QRwUBH' } }
+                            }
+                        }
+                    })
+                });
+
+                if (res.ok || res.status === 202) {
+                    msg.textContent = 'apuntado.';
+                    msg.className = 'form-msg success';
+                    document.getElementById('email-input').value = '';
+                    btn.disabled = false;
+                    btn.textContent = 'Apúntate';
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                msg.textContent = 'algo ha fallado. inténtalo de nuevo.';
+                msg.className = 'form-msg error';
+                btn.disabled = false;
+                btn.textContent = 'Apúntate';
+            }
+        }
+    </script>
+
+</body>
+</html>

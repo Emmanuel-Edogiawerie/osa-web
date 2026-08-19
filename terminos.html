@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSA · Términos</title>
+<meta name="description" content="Quién hay detrás de OSA, qué se hace con tus datos y qué puedes exigir.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OSA · Términos">
+<meta property="og:description" content="Quién hay detrás de OSA y qué se hace con tus datos.">
+<meta property="og:image" content="https://osa.limited/og-image.png">
+<meta property="og:url" content="https://osa.limited/terminos.html">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+    @font-face {
+        font-family: 'Array-Wide';
+        src: url('fonts/Array-Wide.woff2') format('woff2'),
+             url('fonts/Array-Wide.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    /* Supreme: la grotesca de la marca (la que está guardada como
+       "parecidahelvetica" en OSAFINAL). Se usa en cabecera y pie, donde
+       Array-Wide resultaba demasiado técnico. */
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Medium.woff2') format('woff2'),
+             url('fonts/Supreme-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Bold.woff2') format('woff2'),
+             url('fonts/Supreme-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Regular.woff2') format('woff2'),
+             url('fonts/Geist-Regular.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Medium.woff2') format('woff2'),
+             url('fonts/Geist-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* OJO: en <html> no se puede poner overflow-x, NI `hidden` NI `clip`.
+       Ambos rompen el position:sticky de la barra superior. El desbordamiento
+       lateral se resuelve en origen, no tapándolo aquí. */
+
+    body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: 'Geist', -apple-system, sans-serif;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    /* El contenido lleva su propio relleno: el body ya no, porque la barra
+       superior tiene que llegar hasta el borde para flotar como en la home. */
+    .page { padding: 2.5rem 1.5rem 0; }
+
+    /* El mismo resplandor cálido que la home, con la misma geometría.
+       OJO: era position:fixed, y eso lo dejaba pegado a la ventana todo el
+       scroll, así que al llegar abajo el pie quedaba rodeado de naranja.
+       Con absolute pertenece a la cabecera del documento: entra desde el
+       borde de arriba y se queda ahí cuando bajas.
+       left/right a 0 en vez de 120vw centrado: así no puede desbordar. */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 90vh;
+        background: radial-gradient(ellipse 95% 58% at 50% 0%,
+            rgba(255, 92, 32, 0.26) 0%,
+            rgba(255, 57, 11, 0.11) 38%,
+            rgba(255, 57, 11, 0) 78%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* ---------- Barra de anuncio + navegación ----------
+       Idéntica a la de la home: anuncio y nav dentro de un mismo bloque
+       flotante con esquinas redondeadas, pegado arriba al bajar.
+       Medidas tomadas de mertra.com: anuncio 30px, nav 38px, margen 16px. */
+    .topbar {
+        position: sticky;
+        top: 1rem;
+        z-index: 20;
+        margin: 1rem;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .announce {
+        background: rgba(255, 57, 11, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #fff;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        height: 38px;
+        padding: 0 1.2rem;
+        background: #0d0d0d;
+    }
+
+    .nav-wordmark {
+        /* span es inline: sin display:block ignora ancho y alto */
+        display: block;
+        width: 40px;
+        aspect-ratio: 550 / 220;
+        background-color: #fff;
+        -webkit-mask-image: url('osa-wordmark.svg');
+        mask-image: url('osa-wordmark.svg');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: left center;
+        mask-position: left center;
+        transition: background-color 0.2s;
+    }
+
+    .nav-brand:hover .nav-wordmark { background-color: #ff6a1a; }
+
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        white-space: nowrap;
+    }
+
+    .nav-links a,
+    .nav-utils a {
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-utils a:hover { color: #fff; }
+
+    /* La página en la que estás va en blanco */
+    .nav-links a[aria-current="page"] { color: #fff; }
+
+    .nav-utils {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+
+    .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .logo-mark {
+        width: 58px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        margin: 0 auto 1.6rem;
+    }
+
+    h1 {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: clamp(1.5rem, 6vw, 2.1rem);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
+
+    .lede {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: #8a8a8a;
+        text-align: center;
+        max-width: 380px;
+        margin: 0 auto 4.5rem;
+    }
+
+    /* ---------- Documento legal ----------
+       Columna estrecha y mucho interlineado: es texto para leer, no para
+       ojear. Los titulares en Array-Wide como en el resto del sitio. */
+    .doc {
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .doc h2 {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.78rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #fff;
+        font-weight: 400;
+        margin: 3.2rem 0 1rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid #1c1c1c;
+    }
+
+    .doc h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .doc p {
+        font-size: 0.9rem;
+        line-height: 1.85;
+        color: #9a9a9a;
+    }
+
+    .doc p + p { margin-top: 0.9rem; }
+    .doc p b { color: #fff; font-weight: 500; }
+
+    .doc a {
+        color: #ff6a1a;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 0.2s;
+    }
+
+    .doc a:hover { color: #fff; }
+
+    .doc-fecha {
+        margin-top: 3.5rem;
+        padding-top: 1.6rem;
+        border-top: 1px solid #1c1c1c;
+        font-size: 0.78rem;
+        color: #808080;
+    }
+
+    /* ---------- Pie ----------
+       El mismo de la home: píldora de 60px, radio 19px, margen 25px, con
+       iconos a la izquierda, símbolo centrado y controles a la derecha. */
+    footer {
+        position: relative;
+        z-index: 1;
+        padding: 0 25px 25px;
+        margin-top: 5rem;
+    }
+
+    .footer-pill {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: 60px;
+        padding: 0 16px;
+        border: 1px solid #1c1c1c;
+        border-radius: 19px;
+        background: #0d0d0d;
+    }
+
+    .footer-social {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .footer-social a {
+        display: block;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: #fff; }
+
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    /* El <a> es el hijo de la rejilla, así que el centrado va aquí */
+    .footer-pill > a { justify-self: center; line-height: 0; }
+
+    .footer-logo {
+        /* span es inline: sin display:block ignora ancho y alto */
+        display: block;
+        width: 34px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        justify-self: center;
+    }
+
+    .footer-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .footer-help {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-help:hover { color: #fff; }
+
+    .footer-help .chev {
+        width: 10px;
+        height: 10px;
+        transition: transform 0.25s;
+    }
+
+    .footer-help[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+    /* El panel sube desde la píldora */
+    .footer-panel {
+        position: absolute;
+        right: 16px;
+        bottom: calc(100% + 8px);
+        min-width: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        background: #0d0d0d;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
+    }
+
+    .footer-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .footer-panel a {
+        padding: 0.5rem 16px;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-panel a:hover { color: #fff; }
+
+    /* Cada entrada aparece al llegar a ella */
+    .reveal {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+        .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    @media (max-width: 560px) {
+        /* En móvil no cabe todo en tres columnas: se cae IG/TT y el wordmark
+           deja de reservar columna para que los enlaces respiren. */
+        .topbar {
+            top: 0.6rem;
+            margin: 0.6rem;
+            border-radius: 9px;
+        }
+        .nav {
+            grid-template-columns: auto 1fr;
+            height: 36px;
+            padding: 0 0.9rem;
+            gap: 0.8rem;
+        }
+        .nav-wordmark { width: 36px; }
+        .nav-links { justify-content: flex-end; gap: 1rem; }
+        .nav-links a { font-size: 12px; letter-spacing: 0.08em; }
+        .announce { font-size: 10px; letter-spacing: 0.1em; }
+        .nav-utils { display: none; }
+
+        footer { padding: 0 12px 12px; }
+        .footer-pill { padding: 0 12px; }
+        .footer-help { font-size: 13px; letter-spacing: 0.06em; }
+        .footer-social { gap: 14px; }
+    }
+
+    @media (max-width: 520px) {
+        .page { padding: 2rem 1.2rem 0; }
+        .rail { padding-left: 2.1rem; }
+        .phase::before, .entry::before { left: -2.1rem; }
+    }
+
+    /* ---------- Grano ----------
+       Una capa finísima de ruido sobre todo. El negro puro se lee como un
+       vacío; con grano se lee como un material. Va en un SVG incrustado, así
+       que no añade ninguna petición ni ningún archivo. */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="announce">Drop 001 próximamente</div>
+
+    <nav class="nav">
+        <a class="nav-brand" href="index.html" aria-label="OSA"><span class="nav-wordmark"></span></a>
+        <div class="nav-links">
+            <a href="timeline.html">Timeline</a>
+            <a href="pistas.html">Pistas</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="fondos.html">Fondos</a>
+        </div>
+        <div class="nav-utils">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">IG</a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener">TT</a>
+        </div>
+    </nav>
+</div>
+
+<div class="page">
+<div class="wrap">
+
+    <h1>Términos</h1>
+    <p class="lede">Quién hay detrás de OSA, qué se hace con tus datos y qué puedes exigir.</p>
+
+    <section class="doc">
+        <h2>Quién es responsable</h2>
+        <p>OSA es un proyecto independiente con base en España. Para cualquier cosa relacionada con esta web o con tus datos, el contacto es <a href="mailto:hola@osa.limited">hola@osa.limited</a>.</p>
+
+        <h2>Qué datos se recogen</h2>
+        <p>Solo el correo electrónico, y solo si lo escribes tú en el formulario. Se guarda en <b>Klaviyo</b>, un proveedor de email que actúa como encargado del tratamiento. Se usa para una única cosa: avisarte de los drops y de lo que va pasando con la marca.</p>
+        <p>No se venden ni se ceden a terceros. No hay perfilado ni decisiones automatizadas.</p>
+
+        <h2>Cuánto tiempo</h2>
+        <p>Hasta que te des de baja. Cada correo lleva su enlace para hacerlo, y funciona a la primera.</p>
+
+        <h2>Tus derechos</h2>
+        <p>Puedes pedir acceso a tus datos, que se rectifiquen, que se borren, que se limite su uso, oponerte al tratamiento o llevártelos a otro sitio. Se hace escribiendo a <a href="mailto:hola@osa.limited">hola@osa.limited</a>, sin justificar nada y sin coste.</p>
+        <p>Si crees que no se ha hecho bien, puedes reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener">Agencia Española de Protección de Datos</a>.</p>
+
+        <h2>Cookies</h2>
+        <p>Esta web no usa cookies ni te sigue. No hay analítica, ni píxeles, ni publicidad. Por eso tampoco verás un aviso de cookies.</p>
+
+        <h2>Los fondos de pantalla</h2>
+        <p>Son un regalo para uso personal. Puedes usarlos en tus pantallas y enseñarlos donde quieras. No puedes venderlos ni usarlos como parte de un producto propio.</p>
+
+        <h2>Propiedad intelectual</h2>
+        <p>El nombre OSA, el símbolo de la polilla, los diseños y los textos de esta web son propiedad de OSA. Las fotografías de polillas pertenecen a sus autores.</p>
+
+        <h2>Ley aplicable</h2>
+        <p>Se aplica la legislación española.</p>
+
+        <p class="doc-fecha">Última actualización: 11 de agosto de 2026</p>
+    </section>
+
+</div>
+</div>
+
+<!-- ---------- PIE ---------- -->
+<footer>
+    <div class="footer-pill">
+
+        <div class="footer-social">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.2"></rect>
+                    <circle cx="12" cy="12" r="4.2"></circle>
+                    <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16.6,5.82A4.28,4.28 0 0,1 14.7,2.5h-3.1v12.4a2.6,2.6 0 1,1 -2.6,-2.6c.27,0 .53.04.78.12V9.2a5.7,5.7 0 0,0 -.78,-.06 5.7,5.7 0 1,0 5.7,5.7V8.6a7.3,7.3 0 0,0 4.2,1.34V6.86a4.28,4.28 0 0,1 -2.3,-1.04Z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <a href="index.html" aria-label="OSA"><span class="footer-logo"></span></a>
+
+        <div class="footer-controls">
+            <button class="footer-help" id="help-btn" type="button" aria-expanded="false" aria-controls="help-panel">
+                ¿Ayuda?
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                    <path d="M6 15l6-6 6 6"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="footer-panel" id="help-panel">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">Contacto</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="terminos.html">Términos</a>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+    (function revealOnScroll() {
+        const items = document.querySelectorAll('.reveal');
+
+        // Sin IntersectionObserver, se muestra todo y punto
+        if (!('IntersectionObserver' in window)) {
+            items.forEach(el => el.classList.add('in'));
+            return;
+        }
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                    io.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -12% 0px' });
+
+        items.forEach(el => io.observe(el));
+    })();
+
+    (function helpPanel() {
+        const btn   = document.getElementById('help-btn');
+        const panel = document.getElementById('help-panel');
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = panel.classList.toggle('open');
+            btn.setAttribute('aria-expanded', open);
+        });
+
+        // Clic fuera o Escape lo cierran
+        document.addEventListener('click', (e) => {
+            if (!panel.contains(e.target)) {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

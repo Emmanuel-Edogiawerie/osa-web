@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Los fondos son un regalo con contraseña: no tiene sentido que salgan en
+# búsquedas, y los archivos tampoco.
+Disallow: /fondos.html
+Disallow: /regalo/
+
+Sitemap: https://osa.limited/sitemap.xml

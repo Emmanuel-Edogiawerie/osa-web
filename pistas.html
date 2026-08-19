@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSA · Pistas</title>
+<meta name="description" content="Antes del Drop 001, una habitación a oscuras con lo poco que ya se puede contar. Y lo que se descartó por el camino.">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OSA · Pistas">
+<meta property="og:description" content="Antes del Drop 001, una habitación a oscuras con lo poco que ya se puede contar.">
+<meta property="og:image" content="https://osa.limited/og-image.png">
+<meta property="og:url" content="https://osa.limited/pistas.html">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+    @font-face {
+        font-family: 'Array-Wide';
+        src: url('fonts/Array-Wide.woff2') format('woff2'),
+             url('fonts/Array-Wide.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Medium.woff2') format('woff2'),
+             url('fonts/Supreme-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Bold.woff2') format('woff2'),
+             url('fonts/Supreme-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Regular.woff2') format('woff2'),
+             url('fonts/Geist-Regular.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Medium.woff2') format('woff2'),
+             url('fonts/Geist-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* OJO: en <html> no se puede poner overflow-x, NI hidden NI clip.
+       Ambos rompen el position:sticky de la barra superior. */
+
+    body {
+        background: #0d0d0d;
+        color: #fff;
+        font-family: 'Geist', -apple-system, sans-serif;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    .page { padding: 0 1.5rem 0; }
+
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 90vh;
+        background: radial-gradient(ellipse 95% 58% at 50% 0%,
+            rgba(255, 92, 32, 0.26) 0%,
+            rgba(255, 57, 11, 0.11) 38%,
+            rgba(255, 57, 11, 0) 78%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* ---------- Barra de anuncio + navegación ---------- */
+    .topbar {
+        position: sticky;
+        top: 1rem;
+        /* Por encima de .darkness (30): la escena sube por detrás de la
+           barra (ver .scene más abajo) y si no, la oscuridad la taparía. */
+        z-index: 40;
+        margin: 1rem;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .announce {
+        background: rgba(255, 57, 11, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #fff;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        height: 38px;
+        padding: 0 1.2rem;
+        background: #0d0d0d;
+    }
+
+    .nav-wordmark {
+        display: block;
+        width: 40px;
+        aspect-ratio: 550 / 220;
+        background-color: #fff;
+        -webkit-mask-image: url('osa-wordmark.svg');
+        mask-image: url('osa-wordmark.svg');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: left center;
+        mask-position: left center;
+        transition: background-color 0.2s;
+    }
+
+    .nav-brand:hover .nav-wordmark { background-color: #ff6a1a; }
+
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.7rem;
+        white-space: nowrap;
+    }
+
+    .nav-links a,
+    .nav-utils a {
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-utils a:hover { color: #fff; }
+
+    .nav-links a[aria-current="page"] { color: #fff; }
+
+    .nav-utils {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+
+    .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 620px;
+        margin: 0 auto;
+    }
+
+    .wrap-wide { max-width: 940px; }
+
+    h1 {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: clamp(1.5rem, 6vw, 2.1rem);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
+
+    .lede {
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: #8a8a8a;
+        text-align: center;
+        max-width: 460px;
+        margin: 0 auto 3rem;
+    }
+
+    /* ==========================================================
+       LA HABITACIÓN: pared con la pizarra arriba, escritorio abajo.
+       Un único contenedor oscuro, sin costura entre las dos partes,
+       para que se lea como un solo cuarto aunque se recorra con scroll.
+       ========================================================== */
+    /* A pantalla completa: rompe el padding de .page por los dos lados,
+       así que llega al borde de la ventana igual que el resto del sitio
+       no llega nunca (todo lo demás vive dentro de wrap-wide, 940px).
+       Se hace con márgenes negativos, no con vw: vw se mide contra el
+       viewport entero, y si en algún momento aparece una barra de scroll
+       vertical se pasa de largo y crea desbordamiento lateral. Con % del
+       padre no puede pasarse nunca. */
+    .scene {
+        position: relative;
+        width: calc(100% + 3rem);
+        margin-left: -1.5rem;
+        /* Sube por detrás de la barra flotante: mismo cálculo que el
+           resplandor de la home (30 de anuncio + 38 de nav + 16+16 de
+           margen = 100px). La barra sigue opaca en su fila de nav, pero
+           el anuncio es translúcido y hay 16px de margen alrededor de la
+           píldora por los que se ve la escena. */
+        margin-top: -100px;
+        background: linear-gradient(180deg, #0a0a0a, #0d0d0d 55%, #0a0a0a);
+        overflow: hidden;
+    }
+
+    /* La pantalla de Pistas es solo la escena: nada de título encima.
+       El h1 y la lede se quedan en el DOM (para lectores de pantalla y
+       SEO) pero visualmente ocupan un solo píxel — mismo patrón que un
+       "sr-only" clásico. */
+    .scene-title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .scene-hint {
+        text-align: center;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #5f5f5f;
+        margin: 1rem 0 4rem;
+    }
+
+    /* La linterna: una capa negra por encima de todo, con un agujero
+       (radial-gradient en la máscara) que sigue al cursor/dedo. Donde el
+       agujero es transparente, esta capa desaparece y deja ver lo de abajo;
+       fuera del agujero sigue opaca, o sea a oscuras. */
+    /* Ya no tapa del todo fuera del haz: se queda a un 78% como mucho,
+       así se intuye la habitación entera de un vistazo (el corcho, la
+       mesa) y la linterna la termina de revelar en vez de ser la única
+       forma de verla. Varias paradas en vez de un solo salto, para que
+       el borde del haz se difumine en vez de cantar como un anillo. */
+    .darkness {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        background: #0a0705;
+        pointer-events: none;
+        -webkit-mask-image: radial-gradient(circle var(--beam, 260px) at var(--lx, 45%) var(--ly, 40%),
+            transparent 0%, transparent 28%, rgba(0,0,0,0.32) 52%, rgba(0,0,0,0.6) 74%, rgba(0,0,0,0.78) 100%);
+        mask-image: radial-gradient(circle var(--beam, 260px) at var(--lx, 45%) var(--ly, 40%),
+            transparent 0%, transparent 28%, rgba(0,0,0,0.32) 52%, rgba(0,0,0,0.6) 74%, rgba(0,0,0,0.78) 100%);
+        transition: opacity 0.3s;
+    }
+
+    .scene.no-torch .darkness { display: none; }
+
+    /* --------- La habitación: una sola ilustración isométrica ---------
+       Dos paredes que se encuentran de verdad, con el suelo entre
+       ellas, y la mesa metida en el rincón bajo la pizarra. Todo en el
+       mismo dibujo, mismo ángulo: nada de cámara girando entre dos
+       escenas ni de pared+mesa como capas sueltas. */
+    .room-section {
+        padding: 3.5rem 1rem;
+    }
+
+    .room-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .room-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 30px 46px rgba(0, 0, 0, 0.6));
+    }
+
+    #pad-glow-corner {
+        opacity: 0;
+        transition: opacity 0.6s ease;
+    }
+
+    #pad.lit #pad-glow-corner { opacity: 1; }
+
+    .moth-still { animation: moth-breathe 5s ease-in-out infinite; }
+
+    @keyframes moth-breathe {
+        0%, 100% { opacity: 0.4; }
+        50%      { opacity: 0.7; }
+    }
+
+    /* --- Objetos-pista clicables, en % sobre el recorte del viewBox --- */
+    .desk-object {
+        position: absolute;
+        z-index: 7;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .desk-object:focus-visible { outline: 2px solid #ff6a1a; outline-offset: 3px; }
+
+    .desk-object.tape   { left: 26.5%; top: 56%;   width: 14.4%; height: 7.5%; }
+    .desk-object.sticky { left: 41.9%; top: 58%;   width: 6.5%;  height: 6%; }
+    .desk-object.swatch { left: 33.1%; top: 65.5%; width: 6.5%;  height: 6%; }
+    .desk-object.corner { left: 36.1%; top: 53.2%; width: 14.8%; height: 8.7%; }
+
+    /* ---------- Lista de pistas: la lectura fiable, fuera del juego ---------- */
+    .pista-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin: 3rem auto 0;
+        max-width: 780px;
+    }
+
+    .pista-card {
+        border: 1px solid #1c1c1c;
+        border-radius: 8px;
+        padding: 1.3rem 1.3rem 1.5rem;
+        background: #0a0a0a;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .pista-card.highlight {
+        border-color: #ff6a1a;
+        box-shadow: 0 0 0 1px rgba(255,106,26,0.3), 0 0 22px rgba(255,87,26,0.15);
+    }
+
+    .pista-n {
+        display: block;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.22em;
+        color: #ff6a1a;
+        margin-bottom: 0.6rem;
+    }
+
+    .pista-card.is-locked .pista-n { color: #5a5a5a; }
+
+    .pista-text {
+        font-size: 0.95rem;
+        line-height: 1.65;
+        color: #f2f2f2;
+    }
+
+    .pista-locked-text {
+        font-size: 0.82rem;
+        line-height: 1.6;
+        color: #808080;
+    }
+
+    .pista-tag {
+        display: inline-block;
+        margin-top: 0.7rem;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #2fb6ff;
+    }
+
+    .card-gate {
+        margin-top: 0.9rem;
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .card-gate input {
+        flex: 1;
+        min-width: 0;
+        background: #0d0d0d;
+        border: 1px solid #262626;
+        border-radius: 5px;
+        padding: 0.55rem 0.7rem;
+        color: #fff;
+        font-family: 'Geist', sans-serif;
+        font-size: 0.82rem;
+    }
+
+    .card-gate input::placeholder { color: #5a5a5a; }
+
+    .card-gate button {
+        background: #1c1c1c;
+        border: 1px solid #2c2c2c;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0 0.9rem;
+        font-family: 'Supreme', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .card-gate button:hover { background: #2a2a2a; }
+
+    .card-gate-error {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.72rem;
+        color: #ff6a5a;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .card-gate-error.show { opacity: 1; }
+
+    .closing {
+        margin: 4rem auto 0;
+        padding-top: 2.2rem;
+        border-top: 1px solid #1c1c1c;
+        text-align: center;
+        max-width: 620px;
+    }
+
+    .closing p {
+        font-size: 0.85rem;
+        line-height: 1.75;
+        color: #8a8a8a;
+        max-width: 360px;
+        margin: 0 auto 1.6rem;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        background: #ff390b;
+        border: 1px solid #ff390b;
+        color: #fff;
+        padding: 0.8rem 1.6rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-primary:hover { background: #ff5a2e; border-color: #ff5a2e; }
+
+    /* ---------- Pie ---------- */
+    footer {
+        position: relative;
+        z-index: 1;
+        padding: 0 25px 25px;
+        margin-top: 5rem;
+    }
+
+    .footer-pill {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: 60px;
+        padding: 0 16px;
+        border: 1px solid #1c1c1c;
+        border-radius: 19px;
+        background: #0d0d0d;
+    }
+
+    .footer-social {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .footer-social a {
+        display: block;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: #fff; }
+
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    .footer-pill > a { justify-self: center; line-height: 0; }
+
+    .footer-logo {
+        display: block;
+        width: 34px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        justify-self: center;
+    }
+
+    .footer-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .footer-help {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-help:hover { color: #fff; }
+
+    .footer-help .chev {
+        width: 10px;
+        height: 10px;
+        transition: transform 0.25s;
+    }
+
+    .footer-help[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+    .footer-panel {
+        position: absolute;
+        right: 16px;
+        bottom: calc(100% + 8px);
+        min-width: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        background: #0d0d0d;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
+    }
+
+    .footer-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .footer-panel a {
+        padding: 0.5rem 16px;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-panel a:hover { color: #fff; }
+
+    .reveal {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+        .reveal { opacity: 1; transform: none; transition: none; }
+        .scene .darkness { display: none; }
+        .moth-still { animation: none; }
+    }
+
+    @media (max-width: 820px) {
+        .pista-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+        .topbar {
+            top: 0.6rem;
+            margin: 0.6rem;
+            border-radius: 9px;
+        }
+        .nav {
+            grid-template-columns: auto 1fr;
+            height: 36px;
+            padding: 0 0.9rem;
+            gap: 0.8rem;
+        }
+        .nav-wordmark { width: 36px; }
+        .nav-links { justify-content: flex-end; gap: 0.85rem; }
+        .nav-links a { font-size: 11px; letter-spacing: 0.06em; }
+        .announce { font-size: 10px; letter-spacing: 0.1em; }
+        .nav-utils { display: none; }
+
+        .page { padding: 2rem 1.2rem 0; }
+        .scene { width: calc(100% + 2.4rem); margin-left: -1.2rem; }
+        .darkness { --beam: 190px; }
+        .room-section { padding: 2.4rem 0.6rem; }
+
+        footer { padding: 0 12px 12px; }
+        .footer-pill { padding: 0 12px; }
+        .footer-help { font-size: 13px; letter-spacing: 0.06em; }
+        .footer-social { gap: 14px; }
+    }
+
+    /* ---------- Grano ---------- */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="announce">Drop 001 próximamente</div>
+
+    <nav class="nav">
+        <a class="nav-brand" href="index.html" aria-label="OSA"><span class="nav-wordmark"></span></a>
+        <div class="nav-links">
+            <a href="timeline.html">Timeline</a>
+            <a href="pistas.html" aria-current="page">Pistas</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="fondos.html">Fondos</a>
+        </div>
+        <div class="nav-utils">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">IG</a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener">TT</a>
+        </div>
+    </nav>
+</div>
+
+<div class="page">
+
+    <!-- La escena rompe el ancho de wrap-wide a propósito: llena la
+         pantalla como una habitación de verdad, no como una tarjeta más
+         dentro de la página. Empieza en el borde de arriba: el título vive
+         dentro de ella, no encima. -->
+    <div class="scene" id="scene">
+
+        <!-- El título va por encima de la linterna (z-index más alto que
+             .darkness), así se lee siempre, sin depender de encontrarlo. -->
+        <div class="scene-title">
+            <h1>Pistas</h1>
+            <p class="lede">Todavía no hay nada que enseñar del Drop 001. Pero hay una habitación a oscuras, y en ella, lo poco que ya se puede contar. También lo que se descartó por el camino.</p>
+        </div>
+
+        <!-- ---------- LA HABITACIÓN: una sola ilustración isométrica ---------- -->
+        <div class="room-section">
+        <div class="room-wrap">
+
+            <svg class="room-svg" viewBox="140 260 620 600" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                    <linearGradient id="wallAGrad" x1="0" y1="1" x2="0.4" y2="0">
+                        <stop offset="0" stop-color="#16110d"></stop>
+                        <stop offset="1" stop-color="#241d17"></stop>
+                    </linearGradient>
+                    <linearGradient id="wallBGrad" x1="1" y1="1" x2="0.6" y2="0">
+                        <stop offset="0" stop-color="#100c0a"></stop>
+                        <stop offset="1" stop-color="#1b1613"></stop>
+                    </linearGradient>
+                    <linearGradient id="floorGrad" x1="0.5" y1="1" x2="0.5" y2="0">
+                        <stop offset="0" stop-color="#0a0705"></stop>
+                        <stop offset="1" stop-color="#100c09"></stop>
+                    </linearGradient>
+                    <linearGradient id="corkGrad" x1="0" y1="1" x2="0.5" y2="0">
+                        <stop offset="0" stop-color="#b6895a"></stop>
+                        <stop offset="1" stop-color="#cfa876"></stop>
+                    </linearGradient>
+                    <linearGradient id="deskTopGrad" x1="0" y1="1" x2="0.5" y2="0">
+                        <stop offset="0" stop-color="#241a12"></stop>
+                        <stop offset="1" stop-color="#3a2c20"></stop>
+                    </linearGradient>
+                    <linearGradient id="rgbGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff3b3b"></stop>
+                        <stop offset="0.25" stop-color="#ffb03b"></stop>
+                        <stop offset="0.5" stop-color="#4aff7a"></stop>
+                        <stop offset="0.75" stop-color="#3ba7ff"></stop>
+                        <stop offset="1" stop-color="#b23bff"></stop>
+                    </linearGradient>
+                    <radialGradient id="lampGlow" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0" stop-color="#ffb066" stop-opacity="0.5"></stop>
+                        <stop offset="1" stop-color="#ffb066" stop-opacity="0"></stop>
+                    </radialGradient>
+                    <radialGradient id="padGlow" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0" stop-color="#2fb6ff" stop-opacity="0.85"></stop>
+                        <stop offset="1" stop-color="#2fb6ff" stop-opacity="0"></stop>
+                    </radialGradient>
+                    <filter id="softBlur" x="-80%" y="-80%" width="260%" height="260%">
+                        <feGaussianBlur stdDeviation="18"></feGaussianBlur>
+                    </filter>
+                    <pattern id="corkDots" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="skewY(-27) scale(1,0.94)">
+                        <circle cx="5" cy="7" r="1.3" fill="rgba(70,44,20,0.4)"></circle>
+                        <circle cx="16" cy="15" r="1" fill="rgba(255,238,208,0.35)"></circle>
+                        <circle cx="12" cy="4" r="1.1" fill="rgba(70,44,20,0.4)"></circle>
+                    </pattern>
+                    <pattern id="tapeTicks" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-27)">
+                        <rect width="9" height="9" fill="#c9b678"></rect>
+                        <rect width="1.6" height="9" fill="#4a3a1c" opacity="0.55"></rect>
+                    </pattern>
+                </defs>
+
+                <!-- halo ambiental, muy tenue -->
+                <ellipse cx="450" cy="480" rx="420" ry="360" fill="url(#lampGlow)" opacity="0.3"></ellipse>
+
+                <!-- ===== SUELO ===== -->
+                <polygon points="450,780 620,695 450,610 280,695" fill="url(#floorGrad)"></polygon>
+
+                <!-- ===== PARED A (izquierda): la pizarra ===== -->
+                <polygon points="280,695 450,610 450,350 280,435" fill="url(#wallAGrad)"></polygon>
+
+                <!-- ===== PARED B (derecha): lisa ===== -->
+                <polygon points="620,695 450,610 450,350 620,435" fill="url(#wallBGrad)"></polygon>
+
+                <!-- costura: donde de verdad se juntan las dos paredes -->
+                <line x1="450" y1="350" x2="450" y2="610" stroke="rgba(0,0,0,0.4)" stroke-width="2"></line>
+
+                <text x="295" y="378" font-family="'Array-Wide', sans-serif" font-size="10" letter-spacing="2.4" fill="#4a4a4a">DIRECCIONES DESCARTADAS</text>
+
+                <!-- ===== CORCHO, montado en la pared A ===== -->
+                <polygon points="290,630 440,555 440,395 290,470" fill="url(#corkGrad)"></polygon>
+                <polygon points="290,630 440,555 440,395 290,470" fill="url(#corkDots)"></polygon>
+                <polygon points="290,630 440,555 440,395 290,470" fill="none" stroke="rgba(78,52,26,0.55)" stroke-width="2"></polygon>
+
+                <!-- hilo rojo: conecta 3 de los 6 planos, deja 3 sin tocar -->
+                <path d="M296,617 Q320,600 344,593" fill="none" stroke="#ff390b" stroke-width="1.6" opacity="0.75"></path>
+                <path d="M344,593 Q368,545 392,496" fill="none" stroke="#ff390b" stroke-width="1.6" opacity="0.75"></path>
+                <path d="M392,496 Q344,520 296,544" fill="none" stroke="#ff390b" stroke-width="1.6" opacity="0.75"></path>
+
+                <!-- 1 · patrón corporativo -->
+                <g>
+                    <polygon points="296,617 335,598 335,537 296,557" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <polygon points="300,613 331,598 331,541 300,556" fill="rgba(200,225,250,0.16)"></polygon>
+                    <circle cx="296" cy="617" r="3" fill="#ff390b"></circle>
+                    <text x="303" y="590" font-size="7" fill="rgba(255,74,34,.85)" transform="rotate(-27 303 590)" letter-spacing="0.5">DESCARTADO</text>
+                </g>
+
+                <!-- 2 · polilla, watermark -->
+                <g>
+                    <polygon points="344,593 383,574 383,513 344,533" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <circle cx="357" cy="558" r="13" fill="rgba(210,230,250,0.45)"></circle>
+                    <circle cx="371" cy="546" r="7" fill="rgba(210,230,250,0.45)"></circle>
+                    <circle cx="365" cy="580" r="3" fill="#ff390b"></circle>
+                </g>
+
+                <!-- 3 · wordmark OSA a todo el ancho -->
+                <g>
+                    <polygon points="392,569 432,550 432,489 392,509" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <text x="398" y="540" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="17" fill="rgba(215,233,250,0.6)" transform="rotate(-27 398 540)">OSA</text>
+                    <circle cx="392" cy="569" r="3" fill="#ff390b"></circle>
+                    <text x="399" y="562" font-size="7" fill="rgba(255,74,34,.85)" transform="rotate(-27 399 562)" letter-spacing="0.5">DESCARTADO</text>
+                </g>
+
+                <!-- 4 · hexágono frente al rectángulo real -->
+                <g>
+                    <polygon points="296,544 335,524 335,464 296,483" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <rect x="304" y="491" width="24" height="30" fill="none" stroke="rgba(160,200,235,0.5)" stroke-dasharray="2 2" transform="rotate(-27 316 506)"></rect>
+                    <polygon points="316,491 326,497 326,509 316,515 306,509 306,497" fill="rgba(160,200,235,0.28)" stroke="rgba(200,225,250,0.5)" transform="rotate(-27 316 503)"></polygon>
+                    <circle cx="296" cy="544" r="3" fill="#ff390b"></circle>
+                    <text x="303" y="517" font-size="7" fill="rgba(255,74,34,.85)" transform="rotate(-27 303 517)" letter-spacing="0.5">DESCARTADO</text>
+                </g>
+
+                <!-- 5 · borde RGB, tachado con más fuerza -->
+                <g>
+                    <polygon points="344,520 383,500 383,440 344,459" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <rect x="352" y="467" width="24" height="24" fill="url(#rgbGrad)" transform="rotate(-27 364 479)"></rect>
+                    <line x1="348" y1="510" x2="380" y2="450" stroke="#ff390b" stroke-width="2"></line>
+                    <line x1="348" y1="450" x2="380" y2="510" stroke="#ff390b" stroke-width="2"></line>
+                    <circle cx="365" cy="520" r="3" fill="#ff390b"></circle>
+                    <text x="351" y="494" font-size="7" fill="rgba(255,74,34,.85)" transform="rotate(-27 351 494)" letter-spacing="0.5">DESCARTADO</text>
+                </g>
+
+                <!-- 6 · una sola línea, un ala -->
+                <g>
+                    <polygon points="392,496 431,476 431,416 392,435" fill="#0f2a47" stroke="#2f5b86" stroke-width="1.2"></polygon>
+                    <path d="M400,470 Q404,432 424,428 Q438,426 434,448 Q432,466 414,464 Q402,463 400,470 Z"
+                          fill="none" stroke="#ff8a5a" stroke-width="1.8" transform="rotate(-27 411 448)"></path>
+                    <circle cx="392" cy="496" r="3" fill="#ff390b"></circle>
+                </g>
+
+                <!-- ===== MESA, metida en la esquina, pegada a la pared A ===== -->
+                <polygon points="480,600 430,575 430,620 480,645" fill="#1a130d"></polygon>
+                <polygon points="340,670 480,600 480,645 340,715" fill="#241a12"></polygon>
+                <polygon points="340,670 480,600 430,575 290,645" fill="url(#deskTopGrad)" stroke="rgba(0,0,0,0.25)" stroke-width="1"></polygon>
+
+                <!-- deskpad -->
+                <polygon points="351,655 435,613 415,591 331,633" fill="#121010"></polygon>
+
+                <!-- pista 4: solo una esquina se enciende -->
+                <g id="pad">
+                    <ellipse id="pad-glow-corner" cx="410" cy="605" rx="46" ry="26" fill="url(#padGlow)" filter="url(#softBlur)"></ellipse>
+                </g>
+
+                <!-- teclado y ratón -->
+                <polygon points="351,647 400,623 386,614 337,638" fill="#211b16" stroke="#332b23" stroke-width="1"></polygon>
+                <ellipse cx="404" cy="618" rx="8" ry="10" fill="#211b16" stroke="#332b23" stroke-width="1" transform="rotate(-27 404 618)"></ellipse>
+
+                <!-- pista 1: cinta métrica -->
+                <polygon points="309,641 393,599 388,596 304,638" fill="url(#tapeTicks)" stroke="#8a7440" stroke-width="1"></polygon>
+
+                <!-- pista 2: nota adhesiva -->
+                <g transform="translate(417,626) rotate(-27)">
+                    <rect width="16" height="16" fill="#f4d35e"></rect>
+                    <line x1="2.5" y1="6" x2="13.5" y2="6" stroke="#3a2c06" stroke-width="0.8" opacity="0.5"></line>
+                    <line x1="2.5" y1="10" x2="13.5" y2="10" stroke="#3a2c06" stroke-width="0.8" opacity="0.5"></line>
+                </g>
+
+                <!-- pista 3: retal de tela -->
+                <rect x="356" y="661" width="15" height="15" fill="#2a2a2a" stroke="#4a4a4a" stroke-width="0.8" transform="rotate(-27 363 668)"></rect>
+
+                <!-- taza -->
+                <ellipse cx="453" cy="606" rx="12" ry="7" fill="#cdc6b8" stroke="#948c7a" stroke-width="1"></ellipse>
+                <ellipse cx="453" cy="604" rx="8" ry="4.5" fill="#3a2c1c"></ellipse>
+
+                <!-- móvil -->
+                <rect x="322" y="670" width="24" height="42" rx="4" fill="#141210" stroke="#2c241b" stroke-width="1" transform="rotate(-27 334 691)"></rect>
+
+                <!-- auriculares, en el suelo junto a la mesa -->
+                <g transform="translate(388,722) scale(0.85)" opacity="0.92">
+                    <path d="M-14,0 C-14,-15 14,-15 14,0" fill="none" stroke="#241d16" stroke-width="4" stroke-linecap="round"></path>
+                    <ellipse cx="-16" cy="3" rx="8" ry="6" fill="#1a1510" stroke="#3c3024" stroke-width="1.6"></ellipse>
+                    <ellipse cx="16" cy="3" rx="8" ry="6" fill="#1a1510" stroke="#3c3024" stroke-width="1.6"></ellipse>
+                </g>
+
+                <!-- cable, bajando de la mesa al suelo -->
+                <path d="M395,635 C380,660 360,685 348,708" fill="none" stroke="#0c0906" stroke-width="3" stroke-linecap="round" opacity="0.75"></path>
+
+                <!-- la polilla, quieta junto a la taza -->
+                <g class="moth-still" transform="translate(472,588) scale(0.55)" opacity="0.55">
+                    <circle cx="-7" cy="-6" r="9" fill="#e7e2d8"></circle>
+                    <circle cx="7" cy="-3" r="5.5" fill="#e7e2d8"></circle>
+                    <circle cx="-4" cy="8" r="7" fill="#e7e2d8"></circle>
+                    <circle cx="8" cy="9" r="5.5" fill="#e7e2d8"></circle>
+                </g>
+
+                <!-- la luz cálida del rincón: el único foco -->
+                <ellipse cx="400" cy="560" rx="130" ry="150" fill="url(#lampGlow)" opacity="0.55"></ellipse>
+            </svg>
+
+            <button class="desk-object tape" data-goto="1" aria-label="Pista 1: tamaño"></button>
+            <button class="desk-object sticky" data-goto="2" aria-label="Pista 2: superficie"></button>
+            <button class="desk-object swatch" data-goto="3" aria-label="Pista 3: tacto"></button>
+            <button class="desk-object corner" data-goto="4" aria-label="Pista 4: el glow"></button>
+
+        </div>
+        </div>
+
+        <div class="darkness" aria-hidden="true"></div>
+    </div>
+
+<div class="wrap wrap-wide">
+
+    <p class="scene-hint">Mueve el cursor. En el móvil, desliza el dedo.</p>
+
+    <!-- ---------- Las 4 pistas, lectura fiable ---------- -->
+    <div class="pista-grid" id="pista-grid">
+
+        <div class="pista-card reveal" data-pista="1" data-text="800 x 400mm. 3mm de grosor.<br>No es un mousepad. Es una mesa entera.">
+            <span class="pista-n">01 · Tamaño</span>
+            <div class="pista-body"></div>
+        </div>
+
+        <div class="pista-card reveal" data-pista="2" data-text="Ni speed. Ni control.<br>Equilibrio.">
+            <span class="pista-n">02 · Superficie</span>
+            <div class="pista-body"></div>
+        </div>
+
+        <div class="pista-card reveal" data-pista="3" data-text="Tejido técnico. Tacto mate.<br>No es plástico. No es espuma barata.">
+            <span class="pista-n">03 · Tacto</span>
+            <div class="pista-body"></div>
+        </div>
+
+        <div class="pista-card reveal" data-pista="4" data-text="De noche, se enciende.<br>Azul.">
+            <span class="pista-n">04 · El glow</span>
+            <div class="pista-body"></div>
+        </div>
+
+    </div>
+
+    <div class="closing reveal">
+        <p>Esto se sigue escribiendo. Los de la tarjeta ven lo siguiente antes que nadie.</p>
+        <a class="btn-primary" href="tarjeta.html">Añadir la tarjeta</a>
+    </div>
+
+</div>
+</div>
+
+<!-- ---------- PIE ---------- -->
+<footer>
+    <div class="footer-pill">
+
+        <div class="footer-social">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.2"></rect>
+                    <circle cx="12" cy="12" r="4.2"></circle>
+                    <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16.6,5.82A4.28,4.28 0 0,1 14.7,2.5h-3.1v12.4a2.6,2.6 0 1,1 -2.6,-2.6c.27,0 .53.04.78.12V9.2a5.7,5.7 0 0,0 -.78,-.06 5.7,5.7 0 1,0 5.7,5.7V8.6a7.3,7.3 0 0,0 4.2,1.34V6.86a4.28,4.28 0 0,1 -2.3,-1.04Z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <a href="index.html" aria-label="OSA"><span class="footer-logo"></span></a>
+
+        <div class="footer-controls">
+            <button class="footer-help" id="help-btn" type="button" aria-expanded="false" aria-controls="help-panel">
+                ¿Ayuda?
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                    <path d="M6 15l6-6 6 6"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="footer-panel" id="help-panel">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">Contacto</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="terminos.html">Términos</a>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+    /* ---------- La linterna: cursor en escritorio, dedo en móvil ---------- */
+    (function torch() {
+        const scene = document.getElementById('scene');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (reduceMotion) {
+            scene.classList.add('no-torch');
+            return;
+        }
+
+        function move(x, y) {
+            const r = scene.getBoundingClientRect();
+            const px = ((x - r.left) / r.width) * 100;
+            const py = ((y - r.top) / r.height) * 100;
+            scene.style.setProperty('--lx', px + '%');
+            scene.style.setProperty('--ly', py + '%');
+        }
+
+        scene.addEventListener('pointermove', (e) => move(e.clientX, e.clientY));
+        scene.addEventListener('pointerdown', (e) => move(e.clientX, e.clientY));
+    })();
+
+    /* ---------- Desbloqueo por tiempo + primicia de tarjeta ---------- */
+    (function pistas() {
+        // AJUSTAR ESTAS FECHAS antes de publicar: son un ritmo por defecto
+        // (una pista nueva cada 7 días desde que la página sale al público),
+        // no un compromiso ya comunicado a nadie.
+        const HOY = new Date('2026-08-18T00:00:00');
+        const dias = (n) => new Date(HOY.getTime() + n * 86400000).getTime();
+
+        const UNLOCKS = {
+            1: { publicAt: dias(0) },
+            2: { publicAt: dias(7) },
+            3: { publicAt: dias(14) },
+            4: { publicAt: dias(24), cardAt: dias(21) }, // tarjeta entra 3 días antes
+        };
+
+        const CODE = 'balance';
+        const STORAGE_KEY = 'osa_pistas_tarjeta';
+
+        function render() {
+            const now = Date.now();
+            const hasCard = localStorage.getItem(STORAGE_KEY) === '1';
+
+            document.querySelectorAll('.pista-card').forEach((card) => {
+                const id = card.dataset.pista;
+                const rule = UNLOCKS[id];
+                const isFour = id === '4';
+                const text = card.dataset.text;
+
+                const publicUnlocked = now >= rule.publicAt;
+                const cardUnlocked = isFour && hasCard && rule.cardAt && now >= rule.cardAt;
+                const unlocked = publicUnlocked || cardUnlocked;
+
+                card.classList.toggle('is-locked', !unlocked);
+
+                const body = card.querySelector('.pista-body');
+
+                if (unlocked) {
+                    body.innerHTML = `<p class="pista-text">${text}</p>` +
+                        (cardUnlocked && !publicUnlocked ? '<span class="pista-tag">Primicia de tarjeta</span>' : '');
+                    if (isFour) {
+                        const pad = document.getElementById('pad');
+                        if (pad) pad.classList.add('lit');
+                    }
+                } else if (isFour && rule.cardAt && now >= rule.cardAt && !hasCard) {
+                    body.innerHTML = `
+                        <p class="pista-locked-text">Se desbloquea pronto. Los de la tarjeta entran antes.</p>
+                        <div class="card-gate">
+                            <input type="text" id="gate-input-4" placeholder="Código de tarjeta" autocomplete="off">
+                            <button type="button" id="gate-btn-4">Entrar</button>
+                        </div>
+                        <span class="card-gate-error" id="gate-error-4">Ese código no es.</span>
+                    `;
+                    document.getElementById('gate-btn-4').addEventListener('click', tryCode);
+                    document.getElementById('gate-input-4').addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') tryCode();
+                    });
+                } else {
+                    body.innerHTML = '<p class="pista-locked-text">Todavía a oscuras.</p>';
+                }
+            });
+        }
+
+        function tryCode() {
+            const input = document.getElementById('gate-input-4');
+            const error = document.getElementById('gate-error-4');
+            if (input.value.trim().toLowerCase() === CODE) {
+                localStorage.setItem(STORAGE_KEY, '1');
+                render();
+            } else {
+                error.classList.add('show');
+            }
+        }
+
+        render();
+
+        /* Tocar un objeto de la mesa lleva a su pista y la resalta */
+        document.querySelectorAll('[data-goto]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const target = document.querySelector(`.pista-card[data-pista="${btn.dataset.goto}"]`);
+                if (!target) return;
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.classList.add('highlight');
+                setTimeout(() => target.classList.remove('highlight'), 1600);
+            });
+        });
+    })();
+
+    /* ---------- Aparecer al hacer scroll ---------- */
+    (function revealOnScroll() {
+        const items = document.querySelectorAll('.reveal');
+        if (!('IntersectionObserver' in window)) {
+            items.forEach(el => el.classList.add('in'));
+            return;
+        }
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                    io.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        items.forEach(el => io.observe(el));
+    })();
+
+    (function helpPanel() {
+        const btn = document.getElementById('help-btn');
+        const panel = document.getElementById('help-panel');
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = panel.classList.toggle('open');
+            btn.setAttribute('aria-expanded', open);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!panel.contains(e.target)) {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>

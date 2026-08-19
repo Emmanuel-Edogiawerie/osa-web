@@ -1,0 +1,11 @@
+# Tipografías con licencia comercial, no redistribuir (ver README)
+fonts/Array-*.woff*
+fonts/Supreme-*.woff*
+
+# Assets protegidos del lead magnet de fondos de pantalla — no publicar
+regalo/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSA · Regalo</title>
+<meta name="description" content="Dos fondos de pantalla de OSA, cortados para cada pantalla. Gratis, si sabes la contraseña.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Un regalo para ti">
+<meta property="og:description" content="Dos fondos de pantalla de OSA. Gratis, si sabes la contraseña.">
+<meta property="og:image" content="https://osa.limited/og-image.png">
+<meta property="og:url" content="https://osa.limited/fondos.html">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+    @font-face {
+        font-family: 'Array-Wide';
+        src: url('fonts/Array-Wide.woff2') format('woff2'),
+             url('fonts/Array-Wide.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Array-Bold';
+        src: url('fonts/Array-Bold.woff2') format('woff2'),
+             url('fonts/Array-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    /* Supreme: la grotesca de la marca (la que está guardada como
+       "parecidahelvetica" en OSAFINAL). Se usa en cabecera y pie, donde
+       Array-Wide resultaba demasiado técnico. */
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Medium.woff2') format('woff2'),
+             url('fonts/Supreme-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Supreme';
+        src: url('fonts/Supreme-Bold.woff2') format('woff2'),
+             url('fonts/Supreme-Bold.woff') format('woff');
+        font-weight: 700;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Regular.woff2') format('woff2'),
+             url('fonts/Geist-Regular.woff') format('woff');
+        font-weight: 400;
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Geist';
+        src: url('fonts/Geist-Medium.woff2') format('woff2'),
+             url('fonts/Geist-Medium.woff') format('woff');
+        font-weight: 500;
+        font-display: swap;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* OJO: en <html> no se puede poner overflow-x, NI `hidden` NI `clip`.
+       Ambos rompen el position:sticky de la barra superior. El desbordamiento
+       lateral se resuelve en origen, no tapándolo aquí. */
+
+    body {
+        background-color: #0d0d0d;
+        color: #fff;
+        font-family: 'Geist', sans-serif;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+    }
+
+    /* El contenido lleva su propio relleno y su propio centrado: el body ya no,
+       porque la barra superior tiene que llegar al borde para poder flotar. */
+    .page {
+        position: relative;
+        z-index: 1;
+        padding: 2rem 1.25rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    /* El mismo resplandor de cabecera que la home y la timeline: entra desde
+       el borde de arriba y se queda ahí al bajar (absolute, nunca fixed: en
+       fixed acompaña al scroll y deja el pie rodeado de naranja). */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 90vh;
+        background: radial-gradient(ellipse 95% 58% at 50% 0%,
+            rgba(255, 92, 32, 0.26) 0%,
+            rgba(255, 57, 11, 0.11) 38%,
+            rgba(255, 57, 11, 0) 78%);
+        pointer-events: none;
+        z-index: 0;
+    }
+    /* ---------- Barra de anuncio + navegación ----------
+       La misma de la home: anuncio y nav dentro de un mismo bloque flotante
+       con esquinas redondeadas, pegado arriba al bajar.
+       Medidas tomadas de mertra.com: anuncio 30px, nav 38px, margen 16px. */
+    .topbar {
+        position: sticky;
+        top: 1rem;
+        z-index: 20;
+        margin: 1rem;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .announce {
+        background: rgba(255, 57, 11, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        color: #fff;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .nav {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        height: 38px;
+        padding: 0 1.2rem;
+        background: #0d0d0d;
+    }
+
+    .nav-wordmark {
+        /* span es inline: sin display:block ignora ancho y alto */
+        display: block;
+        width: 40px;
+        aspect-ratio: 550 / 220;
+        background-color: #fff;
+        -webkit-mask-image: url('osa-wordmark.svg');
+        mask-image: url('osa-wordmark.svg');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: left center;
+        mask-position: left center;
+        transition: background-color 0.2s;
+    }
+
+    .nav-brand:hover .nav-wordmark { background-color: #ff6a1a; }
+
+    .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        white-space: nowrap;
+    }
+
+    .nav-links a,
+    .nav-utils a {
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #9a9a9a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-utils a:hover { color: #fff; }
+
+    /* La página en la que estás va en blanco */
+    .nav-links a[aria-current="page"] { color: #fff; }
+
+    .nav-utils {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+    }
+
+    /* ---------- Pie ----------
+       El mismo de la home: píldora de 60px, radio 19px, margen 25px, con
+       iconos a la izquierda, símbolo centrado y controles a la derecha. */
+    footer {
+        padding: 0 25px 25px;
+        margin-top: 5rem;
+        /* por encima del resplandor: si no, el panel de ayuda al desplegarse
+           queda por debajo y solo asoma su última línea */
+        position: relative;
+        z-index: 2;
+    }
+
+    .footer-pill {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        height: 60px;
+        padding: 0 16px;
+        border: 1px solid #1c1c1c;
+        border-radius: 19px;
+        background: #0d0d0d;
+    }
+
+    .footer-social {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .footer-social a {
+        display: block;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: #fff; }
+
+    .footer-social svg { width: 18px; height: 18px; display: block; }
+
+    /* El <a> es el hijo de la rejilla, así que el centrado va aquí */
+    .footer-pill > a { justify-self: center; line-height: 0; }
+
+    .footer-logo {
+        /* span es inline: sin display:block ignora ancho y alto */
+        display: block;
+        width: 34px;
+        aspect-ratio: 46 / 49;
+        background-color: #fff;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        justify-self: center;
+    }
+
+    .footer-controls {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .footer-help {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        transition: color 0.2s;
+    }
+
+    .footer-help:hover { color: #fff; }
+
+    .footer-help .chev {
+        width: 10px;
+        height: 10px;
+        transition: transform 0.25s;
+    }
+
+    .footer-help[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+    /* El panel sube desde la píldora */
+    .footer-panel {
+        position: absolute;
+        right: 16px;
+        bottom: calc(100% + 8px);
+        min-width: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+        border: 1px solid #1c1c1c;
+        border-radius: 10px;
+        background: #0d0d0d;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        transition: opacity 0.22s, transform 0.22s, visibility 0.22s;
+    }
+
+    .footer-panel.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .footer-panel a {
+        padding: 0.5rem 16px;
+        font-family: 'Supreme', -apple-system, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-panel a:hover { color: #fff; }
+
+    @media (max-width: 560px) {
+        /* En móvil no cabe todo en tres columnas: se cae IG/TT y el wordmark
+           deja de reservar columna para que los enlaces respiren. */
+        .topbar {
+            top: 0.6rem;
+            margin: 0.6rem;
+            border-radius: 9px;
+        }
+        .nav {
+            grid-template-columns: auto 1fr;
+            height: 36px;
+            padding: 0 0.9rem;
+            gap: 0.8rem;
+        }
+        .nav-wordmark { width: 36px; }
+        .nav-links { justify-content: flex-end; gap: 1rem; }
+        .nav-links a { font-size: 12px; letter-spacing: 0.08em; }
+        .announce { font-size: 10px; letter-spacing: 0.1em; }
+        .nav-utils { display: none; }
+
+        .page { padding: 1.5rem 1.2rem 0; }
+        footer { padding: 0 12px 12px; }
+        .footer-pill { padding: 0 12px; }
+        .footer-help { font-size: 13px; letter-spacing: 0.06em; }
+        .footer-social { gap: 14px; }
+    }
+
+    .wrap {
+        width: 100%;
+        max-width: 920px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo-mark {
+        display: inline-block;
+        background-color: currentColor;
+        -webkit-mask-image: url('LOGO_blanco.png');
+        mask-image: url('LOGO_blanco.png');
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+    }
+
+    .brand-mark {
+        width: 30px;
+        height: 32px;
+        color: #ff390b;
+        margin-bottom: 1.6rem;
+    }
+
+    h1 {
+        font-family: 'Array-Bold', sans-serif;
+        font-size: clamp(1.4rem, 6vw, 2rem);
+        letter-spacing: 0.05em;
+        text-align: center;
+        margin-bottom: 0.9rem;
+    }
+
+    .lede {
+        font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+        color: #999;
+        text-align: center;
+        line-height: 1.6;
+        margin-bottom: 3rem;
+        max-width: 360px;
+    }
+
+    /* --- Gate --- */
+    .gate {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .gate-input {
+        width: 100%;
+        background: #0a0a0a;
+        border: 1px solid #262626;
+        color: #fff;
+        font-family: 'Array-Wide', sans-serif;
+        /* 16px mínimo: por debajo, iOS hace zoom al enfocar el campo */
+        font-size: 1rem;
+        letter-spacing: 0.15em;
+        text-align: center;
+        text-transform: uppercase;
+        padding: 0.95rem 1rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    .gate-input::placeholder { color: #555; text-transform: none; letter-spacing: 0.05em; font-family: 'Geist', sans-serif; }
+    .gate-input:focus { border-color: #ff390b; }
+
+    .gate-btn {
+        width: 100%;
+        margin-top: 0.8rem;
+        background: #ff390b;
+        color: #fff;
+        border: none;
+        text-decoration: none;
+        padding: 0.95rem 1rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .gate-btn:hover { background: #ff5a2e; }
+
+    .gate-error {
+        font-size: 0.75rem;
+        color: #ff390b;
+        letter-spacing: 0.05em;
+        margin-top: 0.9rem;
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+    .gate-error.show { opacity: 1; }
+
+    .get-card {
+        margin-top: 1.6rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        color: #666;
+        text-decoration: none;
+        text-align: center;
+        transition: color 0.2s;
+    }
+    .get-card:hover { color: #fff; }
+
+    /* Amplía la zona táctil sin alterar el diseño */
+    .get-card { position: relative; }
+    .get-card::after {
+        content: "";
+        position: absolute;
+        inset: -12px -18px;
+    }
+
+    .shake { animation: shake 0.35s; }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20% { transform: translateX(-8px); }
+        40% { transform: translateX(8px); }
+        60% { transform: translateX(-6px); }
+        80% { transform: translateX(6px); }
+    }
+
+    /* --- Downloads --- */
+    .downloads {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .downloads.visible { display: flex; }
+    .downloads.in { opacity: 1; transform: translateY(0); }
+
+    .unlocked-label {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+        color: #ff390b;
+        text-transform: uppercase;
+        margin-bottom: 2.5rem;
+        text-align: center;
+    }
+
+    .pack {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .pack + .pack {
+        margin-top: 4rem;
+        padding-top: 3.5rem;
+        border-top: 1px solid #1a1a1a;
+    }
+
+    .pack-title {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 400;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    .grid {
+        width: 100%;
+        display: grid;
+        gap: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .grid-portrait { grid-template-columns: repeat(3, 1fr); }
+    .grid-landscape { grid-template-columns: repeat(2, 1fr); }
+
+    @media (max-width: 700px) {
+        .grid-portrait { grid-template-columns: repeat(2, 1fr); }
+        .grid-landscape { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+        .grid-portrait { grid-template-columns: 1fr; }
+    }
+
+    .tip {
+        display: none;
+        width: 100%;
+        max-width: 420px;
+        border: 1px solid #2a1500;
+        background: #0d0600;
+        color: #bda08e;
+        font-size: 0.78rem;
+        line-height: 1.65;
+        text-align: center;
+        padding: 0.9rem 1.1rem;
+        margin-bottom: 2.2rem;
+    }
+    .tip.show { display: block; }
+    .tip strong { color: #ff390b; font-weight: 500; }
+
+    .file-card {
+        position: relative;
+        border: 1px solid #1a1a1a;
+        background: #060606;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .file-card.mine { border-color: #ff390b; }
+
+    .badge {
+        display: none;
+        position: absolute;
+        top: 1.45rem;
+        right: 1.45rem;
+        z-index: 1;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        color: #ff390b;
+        text-transform: uppercase;
+    }
+    .file-card.mine .badge { display: block; }
+
+    .file-card img {
+        width: 100%;
+        height: 240px;
+        object-fit: contain;
+        background: #0d0d0d;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .file-name {
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.72rem;
+        color: #ccc;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+        text-align: center;
+    }
+
+    .file-res {
+        font-size: 0.68rem;
+        color: #555;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.9rem;
+        text-align: center;
+    }
+
+    .dl-btn {
+        display: block;
+        width: 100%;
+        margin-top: auto;
+        text-align: center;
+        background: transparent;
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #ff390b;
+        padding: 0.7rem 1rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: background 0.2s, color 0.2s;
+    }
+    .dl-btn:hover { background: #ff390b; }
+
+    .dl-all {
+        display: inline-block;
+        margin-top: 1.5rem;
+        background: #ff390b;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.9rem 2.2rem;
+        font-family: 'Array-Wide', sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition: background 0.2s;
+    }
+    .dl-all:hover { background: #ff5a2e; }
+
+    @media (max-width: 700px) {
+        .dl-all { display: none; }
+    }
+
+    .thanks {
+        font-size: 0.8rem;
+        color: #999;
+        text-align: center;
+        line-height: 1.6;
+        max-width: 320px;
+        margin-top: 2.5rem;
+    }
+
+
+    /* ---------- Escritorio ----------
+       La página se diseñó como columna de móvil. En un portátil el texto se
+       quedaba diminuto en mitad de la pantalla. */
+    @media (min-width: 900px) {
+        .lede { max-width: 440px; font-size: 1.02rem; margin-bottom: 3.6rem; }
+        .gate { max-width: 340px; }
+        .gate-input { font-size: 1.05rem; padding: 1.05rem 1rem; }
+        .gate-btn { font-size: 0.92rem; padding: 1.05rem 1rem; }
+        .get-card { font-size: 0.82rem; }
+        .unlocked-label { font-size: 0.85rem; }
+        .pack-title { font-size: 0.86rem; }
+    }
+
+    /* ---------- Grano ----------
+       Una capa finísima de ruido sobre todo. El negro puro se lee como un
+       vacío; con grano se lee como un material. Va en un SVG incrustado, así
+       que no añade ninguna petición ni ningún archivo. */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="announce">Drop 001 próximamente</div>
+
+    <nav class="nav">
+        <a class="nav-brand" href="index.html" aria-label="OSA"><span class="nav-wordmark"></span></a>
+        <div class="nav-links">
+            <a href="timeline.html">Timeline</a>
+            <a href="pistas.html">Pistas</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="fondos.html" aria-current="page">Fondos</a>
+        </div>
+        <div class="nav-utils">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">IG</a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener">TT</a>
+        </div>
+    </nav>
+</div>
+
+<div class="page">
+<div class="wrap">
+
+    <div class="brand-mark logo-mark"></div>
+    <h1>Un regalo para ti</h1>
+    <p class="lede">Dos fondos, cortados para cada pantalla. Gratis, si sabes la contraseña.</p>
+
+    <div class="gate" id="gate">
+        <input class="gate-input" id="gate-input" type="text" placeholder="código de acceso" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="gate-btn" id="gate-btn" type="button">Desbloquear</button>
+        <p class="gate-error" id="gate-error">Código incorrecto. Está dicho en el Instagram de OSA.</p>
+        <a class="get-card" href="tarjeta.html">entérate del Drop 001 antes que nadie →</a>
+    </div>
+
+    <div class="downloads" id="downloads">
+        <p class="unlocked-label">Descarga en calidad original</p>
+
+        <p class="tip" id="tip"></p>
+
+        <!-- ============ Diseño 01 ============ -->
+        <section class="pack">
+            <h2 class="pack-title">01 · Barras</h2>
+
+            <div class="grid grid-portrait">
+                <div class="file-card" data-device="iphone">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-barras-iphone.png" alt="Fondo OSA barras para iPhone" loading="lazy">
+                    <p class="file-name">iPhone</p>
+                    <p class="file-res">1290 × 2796</p>
+                    <a class="dl-btn" href="regalo/osa-barras-iphone.png" download="OSA-barras-iphone.png">Descargar</a>
+                </div>
+                <div class="file-card" data-device="android">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-barras-android.png" alt="Fondo OSA barras para Android" loading="lazy">
+                    <p class="file-name">Android</p>
+                    <p class="file-res">1080 × 2400</p>
+                    <a class="dl-btn" href="regalo/osa-barras-android.png" download="OSA-barras-android.png">Descargar</a>
+                </div>
+                <div class="file-card" data-device="tablet">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-barras-tablet.png" alt="Fondo OSA barras para tablet" loading="lazy">
+                    <p class="file-name">Tablet</p>
+                    <p class="file-res">2048 × 2732</p>
+                    <a class="dl-btn" href="regalo/osa-barras-tablet.png" download="OSA-barras-tablet.png">Descargar</a>
+                </div>
+            </div>
+
+            <div class="grid grid-landscape">
+                <div class="file-card landscape" data-device="laptop">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-barras-laptop.png" alt="Fondo OSA barras para portátil" loading="lazy">
+                    <p class="file-name">Portátil</p>
+                    <p class="file-res">2560 × 1600</p>
+                    <a class="dl-btn" href="regalo/osa-barras-laptop.png" download="OSA-barras-portatil.png">Descargar</a>
+                </div>
+                <div class="file-card landscape" data-device="escritorio">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-barras-escritorio.png" alt="Fondo OSA barras para monitor" loading="lazy">
+                    <p class="file-name">Escritorio</p>
+                    <p class="file-res">3840 × 2160</p>
+                    <a class="dl-btn" href="regalo/osa-barras-escritorio.png" download="OSA-barras-escritorio.png">Descargar</a>
+                </div>
+            </div>
+
+            <a class="dl-all" href="regalo/osa-fondos-barras.zip" download="OSA-fondos-barras.zip">Descargar los 5</a>
+        </section>
+
+        <!-- ============ Diseño 02 ============ -->
+        <section class="pack">
+            <h2 class="pack-title">02 · Contorno</h2>
+
+            <div class="grid grid-portrait">
+                <div class="file-card" data-device="iphone">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-contorno-iphone.png" alt="Fondo OSA contorno para iPhone" loading="lazy">
+                    <p class="file-name">iPhone</p>
+                    <p class="file-res">1290 × 2796</p>
+                    <a class="dl-btn" href="regalo/osa-contorno-iphone.png" download="OSA-contorno-iphone.png">Descargar</a>
+                </div>
+                <div class="file-card" data-device="android">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-contorno-android.png" alt="Fondo OSA contorno para Android" loading="lazy">
+                    <p class="file-name">Android</p>
+                    <p class="file-res">1080 × 2400</p>
+                    <a class="dl-btn" href="regalo/osa-contorno-android.png" download="OSA-contorno-android.png">Descargar</a>
+                </div>
+                <div class="file-card" data-device="tablet">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-contorno-tablet.png" alt="Fondo OSA contorno para tablet" loading="lazy">
+                    <p class="file-name">Tablet</p>
+                    <p class="file-res">2048 × 2732</p>
+                    <a class="dl-btn" href="regalo/osa-contorno-tablet.png" download="OSA-contorno-tablet.png">Descargar</a>
+                </div>
+            </div>
+
+            <div class="grid grid-landscape">
+                <div class="file-card landscape" data-device="laptop">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-contorno-laptop.png" alt="Fondo OSA contorno para portátil" loading="lazy">
+                    <p class="file-name">Portátil</p>
+                    <p class="file-res">2560 × 1600</p>
+                    <a class="dl-btn" href="regalo/osa-contorno-laptop.png" download="OSA-contorno-portatil.png">Descargar</a>
+                </div>
+                <div class="file-card landscape" data-device="escritorio">
+                    <span class="badge">Tu pantalla</span>
+                    <img src="regalo/osa-contorno-escritorio.png" alt="Fondo OSA contorno para monitor" loading="lazy">
+                    <p class="file-name">Escritorio</p>
+                    <p class="file-res">3840 × 2160</p>
+                    <a class="dl-btn" href="regalo/osa-contorno-escritorio.png" download="OSA-contorno-escritorio.png">Descargar</a>
+                </div>
+            </div>
+
+            <a class="dl-all" href="regalo/osa-fondos-contorno.zip" download="OSA-fondos-contorno.zip">Descargar los 5</a>
+        </section>
+
+        <p class="thanks">Gracias por estar dentro desde el principio.</p>
+    </div>
+
+</div>
+</div>
+
+<!-- ---------- PIE ---------- -->
+<footer>
+    <div class="footer-pill">
+
+        <div class="footer-social">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.2"></rect>
+                    <circle cx="12" cy="12" r="4.2"></circle>
+                    <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none"></circle>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@osadropss" target="_blank" rel="noopener" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16.6,5.82A4.28,4.28 0 0,1 14.7,2.5h-3.1v12.4a2.6,2.6 0 1,1 -2.6,-2.6c.27,0 .53.04.78.12V9.2a5.7,5.7 0 0,0 -.78,-.06 5.7,5.7 0 1,0 5.7,5.7V8.6a7.3,7.3 0 0,0 4.2,1.34V6.86a4.28,4.28 0 0,1 -2.3,-1.04Z"></path>
+                </svg>
+            </a>
+        </div>
+
+        <a href="index.html" aria-label="OSA"><span class="footer-logo"></span></a>
+
+        <div class="footer-controls">
+            <button class="footer-help" id="help-btn" type="button" aria-expanded="false" aria-controls="help-panel">
+                ¿Ayuda?
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                    <path d="M6 15l6-6 6 6"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="footer-panel" id="help-panel">
+            <a href="https://instagram.com/osadrops" target="_blank" rel="noopener">Contacto</a>
+            <a href="tarjeta.html">Tarjeta</a>
+            <a href="terminos.html">Términos</a>
+        </div>
+
+    </div>
+</footer>
+
+<script>
+    const CODE = 'polilla';
+    const STORAGE_KEY = 'osa_regalo_unlocked';
+
+    const gate = document.getElementById('gate');
+    const input = document.getElementById('gate-input');
+    const btn = document.getElementById('gate-btn');
+    const error = document.getElementById('gate-error');
+    const downloads = document.getElementById('downloads');
+
+    function unlock() {
+        gate.style.display = 'none';
+        downloads.classList.add('visible');
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => downloads.classList.add('in'));
+        });
+        localStorage.setItem(STORAGE_KEY, '1');
+    }
+
+    function tryCode() {
+        const value = input.value.trim().toLowerCase();
+        if (value === CODE) {
+            unlock();
+        } else {
+            error.classList.add('show');
+            gate.classList.add('shake');
+            setTimeout(() => gate.classList.remove('shake'), 350);
+        }
+    }
+
+    btn.addEventListener('click', tryCode);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') tryCode();
+    });
+
+    if (localStorage.getItem(STORAGE_KEY) === '1') {
+        unlock();
+    }
+
+    /* --- Adaptar a la pantalla desde la que entran --- */
+    (function adaptToDevice() {
+        const ua = navigator.userAgent;
+        const isIPad = /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        const isIPhone = /iPhone|iPod/.test(ua);
+        const isAndroid = /Android/.test(ua);
+        const isIOS = isIPad || isIPhone;
+
+        let device = null;
+        if (isIPhone) device = 'iphone';
+        else if (isIPad) device = 'tablet';
+        else if (isAndroid) device = /Mobile/.test(ua) ? 'android' : 'tablet';
+
+        if (device) {
+            /* hay una tarjeta por dispositivo en cada pack: marcarlas todas */
+            document.querySelectorAll('.file-card[data-device="' + device + '"]').forEach(card => {
+                card.classList.add('mine');
+                card.parentElement.prepend(card);
+            });
+        }
+
+        if (isIOS) {
+            const tip = document.getElementById('tip');
+            tip.innerHTML = 'En ' + (isIPad ? 'iPad' : 'iPhone') + ', el botón guarda el archivo en <strong>Archivos</strong>, no en Fotos. ' +
+                            'Más rápido: <strong>mantén pulsada la imagen</strong> y elige «Añadir a Fotos».';
+            tip.classList.add('show');
+        }
+    })();
+    (function helpPanel() {
+        const btn   = document.getElementById('help-btn');
+        const panel = document.getElementById('help-panel');
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = panel.classList.toggle('open');
+            btn.setAttribute('aria-expanded', open);
+        });
+
+        // Clic fuera o Escape lo cierran
+        document.addEventListener('click', (e) => {
+            if (!panel.contains(e.target)) {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                panel.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    })();
+
+</script>
+
+</body>
+</html>
